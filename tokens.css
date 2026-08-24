@@ -1,0 +1,74 @@
+:root {
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --color-paper: oklch(12% 0.012 260);
+  --color-paper-2: oklch(16% 0.016 260);
+  --color-paper-3: oklch(21% 0.018 260);
+  --color-ink: oklch(96% 0.008 260);
+  --color-ink-soft: oklch(80% 0.012 260);
+  --color-neutral: oklch(64% 0.016 260);
+  --color-muted: oklch(53% 0.016 260);
+  --color-rule: oklch(29% 0.018 260);
+  --color-rule-soft: oklch(23% 0.016 260);
+  --color-accent: oklch(58% 0.2 260);
+  --color-accent-deep: oklch(47% 0.18 260);
+  --color-accent-ink: oklch(12% 0.012 260);
+  --color-focus: oklch(72% 0.2 260);
+  --color-error: oklch(66% 0.19 27);
+
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4.5rem;
+  --space-4xl: 6.5rem;
+  --space-5xl: 9rem;
+
+  --text-display: clamp(3.2rem, 8vw, 7.5rem);
+  --text-display-s: clamp(2.8rem, 6vw, 5.75rem);
+  --text-title: clamp(2rem, 3.6vw, 3.75rem);
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.6rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+  --rule-hair: 1px;
+
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+}
+
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-accent);
+  --color-primary-foreground: var(--color-accent-ink);
+  --color-secondary: var(--color-paper-2);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-paper-2);
+  --color-muted-foreground: var(--color-neutral);
+  --color-accent: var(--color-paper-3);
+  --color-accent-foreground: var(--color-ink);
+  --color-card: var(--color-paper-2);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-paper-2);
+  --color-popover-foreground: var(--color-ink);
+  --color-border: var(--color-rule);
+  --color-input: var(--color-paper-2);
+  --color-ring: var(--color-focus);
+  --color-destructive: var(--color-error);
+  --color-destructive-foreground: var(--color-ink);
+}

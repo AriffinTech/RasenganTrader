@@ -1,0 +1,8 @@
+{
+  "date": "2026-08-25",
+  "font_stack": "Google CSS imports: Sora, IBM Plex Sans, IBM Plex Mono",
+  "palette": "Custom OKLCH tokens in tokens.css",
+  "motion": "framer-motion installed; redesign uses CSS-only microinteractions",
+  "spacing": "Semantic 4pt-derived scale in tokens.css",
+  "framework": "Next.js 16 App Router with Tailwind v4"
+}
