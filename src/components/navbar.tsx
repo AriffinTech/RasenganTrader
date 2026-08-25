@@ -18,7 +18,7 @@ export function Navbar() {
         </Link>
         
         <a 
-          href="https://wa.me/60123456789" 
+          href="https://t.me/HanishanafiRT" 
           target="_blank"
           rel="noopener noreferrer"
           className="h-10 px-6 inline-flex items-center justify-center rounded-sm bg-accent text-paper font-medium text-sm transition-transform hover:-translate-y-[1px] active:translate-y-[1px]"

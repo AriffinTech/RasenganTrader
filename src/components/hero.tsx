@@ -6,11 +6,11 @@ export function Hero() {
           Candlestick Is The <span className="text-accent">Best</span> Indicator.
         </h1>
         <p className="font-sans text-xl md:text-2xl text-muted-foreground max-w-lg leading-relaxed">
-          Kuasai Price Action, Trade Lebih Confident.
+          Pembelajaran Teknik True Smart Money Concept (SMC)
         </p>
         <div className="pt-2">
           <a 
-            href="https://wa.me/60123456789" 
+            href="https://t.me/HanishanafiRT" 
             target="_blank"
             rel="noopener noreferrer"
             className="h-12 px-8 inline-flex items-center justify-center rounded-sm bg-accent text-paper font-medium text-base transition-transform hover:-translate-y-[1px] active:translate-y-[1px]"

@@ -24,7 +24,7 @@ export function HeroSection() {
           Candlestick Is The <span className="text-primary">Best</span> Indicator.
         </h1>
         <p className="mt-5 max-w-[33ch] text-[0.94rem] leading-6 text-[color:var(--color-ink-soft)] sm:mt-7 sm:max-w-xl sm:text-lg sm:leading-8">
-          Pembelajaran Teknik True SMC Concept untuk trader yang mahu membaca pergerakan harga dengan lebih jelas dan menguasai Price Action.
+          Pembelajaran Teknik True Smart Money Concept (SMC) untuk trader yang mahu membaca pergerakan harga dengan lebih jelas dan menguasai Price Action.
         </p>
         <div className="mt-7 flex w-full max-w-xl flex-col items-center gap-5 sm:mt-9 sm:flex-row sm:justify-between">
           <EnrollmentLink className="px-6 text-sm font-semibold sm:px-7">

@@ -1,4 +1,4 @@
-import { EnrollmentLink } from '@/components/enrollment-link'
+import { ArrowUpRight } from 'lucide-react'
 
 const platforms = [
   ['M+', 'Mplus'],
@@ -29,12 +29,21 @@ export function AccountOpening() {
                 <h3 className="mt-5 text-lg font-semibold tracking-[-0.035em] text-foreground">{fullName}</h3>
                 <p className="mt-3 max-w-xs text-sm leading-6 text-muted-foreground">Mohon bantuan pembukaan akaun dengan {fullName}.</p>
               </div>
-              <EnrollmentLink offer="account" variant="outline" className="mt-8 w-fit px-4 text-sm font-semibold">
+              <a 
+                href="https://t.me/HanishanafiRT" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="enroll-outline mt-8 w-fit px-4 text-sm font-semibold"
+              >
                 Mohon bantuan
-              </EnrollmentLink>
+                <ArrowUpRight aria-hidden="true" className="size-4" />
+              </a>
             </article>
           ))}
         </div>
+        <p className="mt-10 text-sm leading-relaxed text-muted-foreground">
+          <strong className="font-semibold text-foreground">Disclaimer:</strong> Link di atas mungkin mengandungi rujukan affiliate. Anda tetap bayar harga yang sama — kami terima sedikit komisen yang membantu kami bina lebih banyak kandungan percuma.
+        </p>
       </div>
     </section>
   )
