@@ -2,30 +2,31 @@ import Image from 'next/image'
 import { ArrowDown } from 'lucide-react'
 
 import { EnrollmentLink } from '@/components/enrollment-link'
-import logoImage from '../../../photo_2026-05-20_15-27-50.jpg'
 
 export function HeroSection() {
   return (
     <section className="site-grid relative isolate overflow-hidden border-b border-border">
       <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px rule-fade" />
-      <div className="relative mx-auto flex min-h-[calc(100svh-4rem)] max-w-[78rem] flex-col items-center justify-center px-5 pb-20 pt-16 text-center sm:px-8 lg:pb-28 lg:pt-20">
-        <p className="absolute left-5 top-7 font-mono text-xs font-medium tracking-[0.18em] text-primary sm:left-8 lg:left-12">
+      <div className="relative mx-auto flex min-h-[calc(100svh-6.25rem)] max-w-[78rem] flex-col items-center justify-center px-5 pb-12 pt-12 text-center sm:px-8 sm:pb-20 sm:pt-16 lg:pb-28 lg:pt-20">
+        <p className="absolute left-5 top-5 font-mono text-[0.65rem] font-medium tracking-[0.18em] text-primary sm:left-8 sm:top-7 sm:text-xs lg:left-12">
           LIQUIDITY IS KING
         </p>
         <Image
-          src={logoImage}
+          src="/logo.png"
           alt="RasenganTrader Logo"
-          className="mt-7 h-auto w-48 sm:w-56"
+          width={740}
+          height={500}
+          className="mt-6 h-auto w-32 sm:mt-7 sm:w-48 lg:w-56"
           priority
         />
 
-        <h1 className="mt-8 max-w-[13ch] font-[family-name:var(--font-display)] text-[clamp(3.25rem,8vw,7.25rem)] font-semibold leading-[0.93] tracking-[-0.075em] text-foreground">
+        <h1 className="mt-7 max-w-[11ch] font-[family-name:var(--font-display)] text-[clamp(2.75rem,12vw,7.25rem)] font-semibold leading-[0.96] tracking-[-0.065em] text-foreground sm:mt-8 sm:max-w-[13ch] sm:text-[clamp(3.25rem,8vw,7.25rem)] sm:leading-[0.93] sm:tracking-[-0.075em]">
           Candlestick Is The <span className="text-primary">Best</span> Indicator.
         </h1>
-        <p className="mt-7 max-w-xl text-base leading-7 text-[color:var(--color-ink-soft)] sm:text-lg sm:leading-8">
+        <p className="mt-5 max-w-[33ch] text-[0.94rem] leading-6 text-[color:var(--color-ink-soft)] sm:mt-7 sm:max-w-xl sm:text-lg sm:leading-8">
           Pembelajaran Teknik True SMC Concept untuk trader yang mahu membaca pergerakan harga dengan lebih jelas dan menguasai Price Action.
         </p>
-        <div className="mt-9 flex w-full max-w-xl flex-col items-center gap-5 sm:flex-row sm:justify-between">
+        <div className="mt-7 flex w-full max-w-xl flex-col items-center gap-5 sm:mt-9 sm:flex-row sm:justify-between">
           <EnrollmentLink className="px-6 text-sm font-semibold sm:px-7">
             Daftar Sekarang
           </EnrollmentLink>
