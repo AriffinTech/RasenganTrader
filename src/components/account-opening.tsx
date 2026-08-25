@@ -1,9 +1,9 @@
 import { ArrowUpRight } from 'lucide-react'
 
 const platforms = [
-  ['M+', 'Mplus'],
-  ['moomoo', 'moomoo'],
-  ['Phillip', 'Phillip Capital'],
+  { shortName: 'M+', fullName: 'Mplus', link: 'https://m.global.mplusonline.com/kh/status/entry/transit?lang=en_US&_scnl=MR389064' },
+  { shortName: 'moomoo', fullName: 'moomoo', link: 'https://start.moomoo.com/0iuzT1' },
+  { shortName: 'Phillip', fullName: 'Phillip Capital', link: 'https://oao.phillip.com.my/?aetag=MAU' },
 ]
 
 export function AccountOpening() {
@@ -22,25 +22,42 @@ export function AccountOpening() {
           </p>
         </div>
         <div className="mt-10 grid divide-y divide-border border-y border-border md:grid-cols-3 md:divide-x md:divide-y-0">
-          {platforms.map(([shortName, fullName]) => (
+          {platforms.map(({ shortName, fullName, link }) => (
             <article key={fullName} className="flex min-h-64 flex-col justify-between px-0 py-7 md:px-7 lg:px-9">
               <div>
                 <p className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-[-0.06em] text-foreground">{shortName}</p>
                 <h3 className="mt-5 text-lg font-semibold tracking-[-0.035em] text-foreground">{fullName}</h3>
-                <p className="mt-3 max-w-xs text-sm leading-6 text-muted-foreground">Mohon bantuan pembukaan akaun dengan {fullName}.</p>
+                <p className="mt-3 max-w-xs text-sm leading-6 text-muted-foreground">Buka akaun trading rasmi dengan {fullName}.</p>
               </div>
               <a 
-                href="https://t.me/HanishanafiRT" 
+                href={link} 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="enroll-outline mt-8 w-fit px-4 text-sm font-semibold"
               >
-                Mohon bantuan
+                Buka akaun, klik sini
                 <ArrowUpRight aria-hidden="true" className="size-4" />
               </a>
             </article>
           ))}
         </div>
+        
+        <div className="mt-12 flex flex-col items-center justify-center rounded-xl border border-border bg-secondary/10 px-6 py-10 text-center sm:px-10">
+          <h3 className="text-xl font-semibold text-foreground">Perlukan Bantuan Tambahan?</h3>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
+            Jika anda tidak pasti mahu pilih platform mana atau perlukan bantuan semasa proses pendaftaran, hubungi saya di Telegram.
+          </p>
+          <a
+            href="https://t.me/HanishanafiRT"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="enroll-outline mt-6 w-fit px-6 text-sm font-semibold"
+          >
+            Mohon Bantuan Telegram
+            <ArrowUpRight aria-hidden="true" className="size-4" />
+          </a>
+        </div>
+
         <p className="mt-10 text-sm leading-relaxed text-muted-foreground">
           <strong className="font-semibold text-foreground">Disclaimer:</strong> Link di atas mungkin mengandungi rujukan affiliate. Anda tetap bayar harga yang sama — kami terima sedikit komisen yang membantu kami bina lebih banyak kandungan percuma.
         </p>
