@@ -8,12 +8,12 @@ const platforms = [
 
 export function AccountOpening() {
   return (
-    <section id="buka-akaun" className="scroll-mt-32 px-5 py-20 sm:px-8 md:py-28 lg:px-12">
+    <section id="buka-akaun" className="scroll-mt-32 px-5 py-16 sm:px-8 sm:py-20 md:py-28 lg:px-12">
       <div className="mx-auto max-w-[90rem]">
         <div className="grid gap-8 border-b border-border pb-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:items-end">
           <div>
             <p className="font-mono text-xs font-medium tracking-[0.16em] text-primary">ADDITIONAL SERVICE</p>
-            <h2 className="mt-4 max-w-[11ch] text-[clamp(2.3rem,4vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-foreground">
+            <h2 className="mt-4 max-w-[11ch] text-[clamp(2rem,4vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-foreground">
               Buka Akaun.
             </h2>
           </div>

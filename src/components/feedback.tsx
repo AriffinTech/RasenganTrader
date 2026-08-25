@@ -18,11 +18,11 @@ const feedbacks = [
 
 export function Feedback() {
   return (
-    <section className="border-b border-border px-5 py-20 sm:px-8 md:py-28 lg:px-12">
+    <section className="border-b border-border px-5 py-16 sm:px-8 sm:py-20 md:py-28 lg:px-12">
       <div className="mx-auto max-w-[90rem]">
         <div className="max-w-2xl">
           <p className="font-mono text-xs font-medium tracking-[0.16em] text-primary">FEEDBACK</p>
-          <h2 className="mt-4 text-[clamp(2.3rem,4vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-foreground">
+          <h2 className="mt-4 text-[clamp(2rem,4vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-foreground">
             Maklum balas daripada pelajar.
           </h2>
           <p className="mt-5 text-base leading-7 text-[color:var(--color-ink-soft)]">

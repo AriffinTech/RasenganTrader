@@ -3,12 +3,12 @@ import { coachingOffer, courseOffer } from '@/lib/course'
 
 export function CourseDetails() {
   return (
-    <section id="kelas" className="scroll-mt-32 border-y border-border px-5 py-20 sm:px-8 md:py-28 lg:px-12">
+    <section id="kelas" className="scroll-mt-32 border-y border-border px-5 py-16 sm:px-8 sm:py-20 md:py-28 lg:px-12">
       <div className="mx-auto max-w-[90rem]">
         <div className="grid gap-8 border-b border-border pb-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-end">
           <div>
             <p className="font-mono text-xs font-medium tracking-[0.16em] text-primary">TRUE SMC FAST TRACK</p>
-            <h2 className="mt-4 max-w-[13ch] text-[clamp(2.4rem,4.5vw,4.8rem)] font-semibold leading-[0.96] tracking-[-0.06em] text-foreground">
+            <h2 className="mt-4 max-w-[13ch] text-[clamp(2rem,4.5vw,4.8rem)] font-semibold leading-[0.96] tracking-[-0.06em] text-foreground">
               Kursus lengkap dari konsep sehingga execution.
             </h2>
           </div>

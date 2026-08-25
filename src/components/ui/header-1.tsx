@@ -26,7 +26,7 @@ export function Header() {
         </EnrollmentLink>
       </nav>
       <div className="border-t border-border">
-        <div className="mx-auto flex w-full max-w-[90rem] justify-start overflow-x-auto px-3 sm:justify-center sm:px-8 lg:px-12">
+        <div className="mx-auto flex w-full max-w-[90rem] justify-start sm:justify-center overflow-x-auto px-3 sm:px-8 lg:px-12">
           <div className="flex min-w-max items-center gap-5 sm:gap-8">
             <Link href="/#kelas" className="flex min-h-11 items-center whitespace-nowrap text-xs font-medium text-muted-foreground transition-colors hover:text-primary sm:text-sm">Kelas</Link>
             <Link href="/#buka-akaun" className="flex min-h-11 items-center whitespace-nowrap text-xs font-medium text-muted-foreground transition-colors hover:text-primary sm:text-sm">Buka Akaun</Link>
