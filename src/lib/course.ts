@@ -1,11 +1,10 @@
+export type RegistrationOfferKey = 'course' | 'coaching' | 'account'
+
 export const courseOffer = {
   title: 'True SMC Fast Track Course',
   educator: 'Dr Hanis Hanafi',
-  date: '18 & 19 July 2026',
-  schedule: ['9.30am – 12pm', '9pm – 11pm'],
-  platform: 'Google Meet',
-  price: 'RM399',
-  previousPrice: 'RM499',
+  nextClass: 'November / December',
+  price: 'RM499',
   modules: [
     {
       number: '01',
@@ -47,3 +46,31 @@ export const courseOffer = {
     ],
   },
 } as const
+
+export const coachingOffer = {
+  title: '1-1 Personal Online Coaching',
+  price: 'RM1,600',
+  inclusions: ['10x sessions', '1 hour per session', 'Only 2 slots per month'],
+} as const
+
+export const registrationOffers = {
+  course: {
+    title: courseOffer.title,
+    price: courseOffer.price,
+    description: 'Pendaftaran untuk kelas True SMC Fast Track Course.',
+  },
+  coaching: {
+    title: coachingOffer.title,
+    price: coachingOffer.price,
+    description: 'Permohonan untuk sesi personal online coaching.',
+  },
+  account: {
+    title: 'Buka Akaun',
+    price: undefined,
+    description: 'Permohonan bantuan membuka akaun dengan Mplus, moomoo, atau Phillip Capital.',
+  },
+} as const
+
+export function isRegistrationOffer(value: string | undefined): value is RegistrationOfferKey {
+  return value === 'course' || value === 'coaching' || value === 'account'
+}

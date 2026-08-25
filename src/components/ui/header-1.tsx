@@ -25,6 +25,15 @@ export function Header() {
           Daftar Sekarang
         </EnrollmentLink>
       </nav>
+      <div className="border-t border-border">
+        <div className="mx-auto flex w-full max-w-[90rem] justify-center overflow-x-auto px-5 sm:px-8 lg:px-12">
+          <div className="flex min-w-max items-center gap-6 py-3 sm:gap-8">
+            <Link href="/#kelas" className="min-h-8 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Kelas</Link>
+            <Link href="/#buka-akaun" className="min-h-8 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Buka Akaun</Link>
+            <Link href="/#background-educator" className="min-h-8 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Background Educator</Link>
+          </div>
+        </div>
+      </div>
     </header>
   )
 }

@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { ArrowDown } from 'lucide-react'
 
 import { EnrollmentLink } from '@/components/enrollment-link'
+import logoImage from '../../../photo_2026-05-20_15-27-50.jpg'
 
 export function HeroSection() {
   return (
@@ -12,18 +13,17 @@ export function HeroSection() {
           LIQUIDITY IS KING
         </p>
         <Image
-          src="/logo.png"
-          alt="RasenganTrader RT monogram"
-          width={740}
-          height={500}
+          src={logoImage}
+          alt="RasenganTrader Logo"
+          className="mt-7 h-auto w-48 sm:w-56"
           priority
-          className="mt-7 h-auto w-[10.5rem] sm:w-[12.5rem]"
         />
+
         <h1 className="mt-8 max-w-[13ch] font-[family-name:var(--font-display)] text-[clamp(3.25rem,8vw,7.25rem)] font-semibold leading-[0.93] tracking-[-0.075em] text-foreground">
           Candlestick Is The <span className="text-primary">Best</span> Indicator.
         </h1>
         <p className="mt-7 max-w-xl text-base leading-7 text-[color:var(--color-ink-soft)] sm:text-lg sm:leading-8">
-          Kuasai Price Action dan baca pergerakan harga dengan lebih tenang bersama Dr. Hanis Hanafi.
+          Pembelajaran Teknik True SMC Concept untuk trader yang mahu membaca pergerakan harga dengan lebih jelas dan menguasai Price Action.
         </p>
         <div className="mt-9 flex w-full max-w-xl flex-col items-center gap-5 sm:flex-row sm:justify-between">
           <EnrollmentLink className="px-6 text-sm font-semibold sm:px-7">

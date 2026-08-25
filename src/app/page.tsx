@@ -1,8 +1,11 @@
 import { CourseMap } from '@/components/course-map'
 import { CourseDetails } from '@/components/course-details'
 import { CtaStrip } from '@/components/cta-strip'
+import { Feedback } from '@/components/feedback'
 import { Footer } from '@/components/footer'
 import { Founder } from '@/components/founder'
+import { AccountOpening } from '@/components/account-opening'
+import { PainPoints } from '@/components/pain-points'
 import { Header } from '@/components/ui/header-1'
 import { CredibilityStrip, HeroSection } from '@/components/ui/hero-1'
 
@@ -13,10 +16,13 @@ export default function Home() {
       <main className="grow">
         <HeroSection />
         <CredibilityStrip />
+        <PainPoints />
         <CourseMap />
         <CourseDetails />
         <Founder />
         <CtaStrip />
+        <Feedback />
+        <AccountOpening />
       </main>
       <Footer />
     </div>

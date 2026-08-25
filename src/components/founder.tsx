@@ -4,7 +4,7 @@ import founderPortrait from '../../photo_2026-08-25_00-38-51.jpg'
 
 export function Founder() {
   return (
-    <section className="border-y border-border px-5 py-20 sm:px-8 md:py-28 lg:px-12">
+    <section id="background-educator" className="scroll-mt-32 border-y border-border px-5 py-20 sm:px-8 md:py-28 lg:px-12">
       <div className="mx-auto grid max-w-[82rem] gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:items-center lg:gap-16">
         <figure className="relative overflow-hidden border border-border bg-secondary">
           <Image
