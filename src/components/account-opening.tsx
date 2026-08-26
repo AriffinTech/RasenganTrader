@@ -1,9 +1,30 @@
 import { ArrowUpRight } from 'lucide-react'
 
 const platforms = [
-  { shortName: 'M+', fullName: 'Mplus', link: 'https://m.global.mplusonline.com/kh/status/entry/transit?lang=en_US&_scnl=MR389064' },
-  { shortName: 'moomoo', fullName: 'moomoo', link: 'https://start.moomoo.com/0iuzT1' },
-  { shortName: 'Phillip', fullName: 'Phillip Capital', link: 'https://oao.phillip.com.my/?aetag=MAU' },
+  { 
+    name: 'M+ Global', 
+    link: 'https://m.global.mplusonline.com/kh/status/entry/transit?lang=en_US&_scnl=MR389064',
+    features: [
+      'Trade saham Bursa & US',
+      'Dapat akses iSaham Pro (Remisier Anas Faris - Top Remisier Award)'
+    ]
+  },
+  { 
+    name: 'moomoo', 
+    link: 'https://start.moomoo.com/0iuzT1',
+    features: [
+      'Trade saham Bursa & US',
+      'Dapat Welcome Reward'
+    ]
+  },
+  { 
+    name: 'Phillip Capital', 
+    link: 'https://oao.phillip.com.my/?aetag=MAU',
+    features: [
+      'Trade Futures seperti FCPO, CL & ZL',
+      'Akaun under Remisier Dr Arif Zainudin (Top Remisier Award)'
+    ]
+  },
 ]
 
 export function AccountOpening() {
@@ -22,12 +43,18 @@ export function AccountOpening() {
           </p>
         </div>
         <div className="mt-10 grid divide-y divide-border border-y border-border md:grid-cols-3 md:divide-x md:divide-y-0">
-          {platforms.map(({ shortName, fullName, link }) => (
-            <article key={fullName} className="flex min-h-64 flex-col justify-between px-0 py-7 md:px-7 lg:px-9">
+          {platforms.map(({ name, link, features }) => (
+            <article key={name} className="flex min-h-64 flex-col justify-between px-0 py-7 md:px-7 lg:px-9">
               <div>
-                <p className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-[-0.06em] text-foreground">{shortName}</p>
-                <h3 className="mt-5 text-lg font-semibold tracking-[-0.035em] text-foreground">{fullName}</h3>
-                <p className="mt-3 max-w-xs text-sm leading-6 text-muted-foreground">Buka akaun trading rasmi dengan {fullName}.</p>
+                <h3 className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-[-0.06em] text-foreground">{name}</h3>
+                <ul className="mt-5 space-y-3">
+                  {features.map((feature, i) => (
+                    <li key={i} className="flex text-sm leading-relaxed text-muted-foreground">
+                      <span className="mr-3 text-primary">•</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
               <a 
                 href={link} 
@@ -42,10 +69,10 @@ export function AccountOpening() {
           ))}
         </div>
         
-        <div className="mt-12 flex flex-col items-center justify-center rounded-xl border border-border bg-secondary/10 px-6 py-10 text-center sm:px-10">
+        <div id="contact" className="scroll-mt-32 mt-12 flex flex-col items-center justify-center rounded-xl border border-border bg-secondary/10 px-6 py-10 text-center sm:px-10">
           <h3 className="text-xl font-semibold text-foreground">Perlukan Bantuan Tambahan?</h3>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Jika anda tidak pasti mahu pilih platform mana atau perlukan bantuan semasa proses pendaftaran, hubungi saya di Telegram.
+            Jika anda nak bertanya tentang kelas / perlukan bantuan semasa buka akaun, hubungi saya di telegram.
           </p>
           <a
             href="https://t.me/HanishanafiRT"
@@ -53,7 +80,7 @@ export function AccountOpening() {
             rel="noopener noreferrer"
             className="enroll-outline mt-6 w-fit px-6 text-sm font-semibold"
           >
-            Mohon Bantuan Telegram
+            Contact melalui Telegram
             <ArrowUpRight aria-hidden="true" className="size-4" />
           </a>
         </div>

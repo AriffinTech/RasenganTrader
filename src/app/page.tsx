@@ -1,6 +1,5 @@
 import { CourseMap } from '@/components/course-map'
 import { CourseDetails } from '@/components/course-details'
-import { CtaStrip } from '@/components/cta-strip'
 import { Feedback } from '@/components/feedback'
 import { Footer } from '@/components/footer'
 import { Founder } from '@/components/founder'
@@ -20,7 +19,6 @@ export default function Home() {
         <CourseMap />
         <CourseDetails />
         <Founder />
-        <CtaStrip />
         <Feedback />
         <AccountOpening />
       </main>

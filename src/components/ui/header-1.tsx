@@ -31,6 +31,8 @@ export function Header() {
             <Link href="/#kelas" className="flex min-h-11 items-center whitespace-nowrap text-xs font-medium text-muted-foreground transition-colors hover:text-primary sm:text-sm">Kelas</Link>
             <Link href="/#buka-akaun" className="flex min-h-11 items-center whitespace-nowrap text-xs font-medium text-muted-foreground transition-colors hover:text-primary sm:text-sm">Buka Akaun</Link>
             <Link href="/#background-educator" className="flex min-h-11 items-center whitespace-nowrap text-xs font-medium text-muted-foreground transition-colors hover:text-primary sm:text-sm">Background Educator</Link>
+            <Link href="/#feedback" className="flex min-h-11 items-center whitespace-nowrap text-xs font-medium text-muted-foreground transition-colors hover:text-primary sm:text-sm">Feedback</Link>
+            <Link href="/#contact" className="flex min-h-11 items-center whitespace-nowrap text-xs font-medium text-muted-foreground transition-colors hover:text-primary sm:text-sm">Contact</Link>
           </div>
         </div>
       </div>

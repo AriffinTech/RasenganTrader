@@ -53,7 +53,7 @@ const feedbacks = [
 
 export function Feedback() {
   return (
-    <section className="border-b border-border px-5 py-16 sm:px-8 sm:py-20 md:py-28 lg:px-12">
+    <section id="feedback" className="scroll-mt-32 border-b border-border px-5 py-16 sm:px-8 sm:py-20 md:py-28 lg:px-12">
       <div className="mx-auto max-w-[90rem]">
         <div className="max-w-2xl">
           <p className="font-mono text-xs font-medium tracking-[0.16em] text-primary">FEEDBACK</p>
