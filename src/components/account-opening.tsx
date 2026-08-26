@@ -88,6 +88,23 @@ export function AccountOpening() {
         <p className="mt-10 text-sm leading-relaxed text-muted-foreground">
           <strong className="font-semibold text-foreground">Disclaimer:</strong> Link di atas mungkin mengandungi rujukan affiliate. Anda tetap bayar harga yang sama — kami terima sedikit komisen yang membantu kami bina lebih banyak kandungan percuma.
         </p>
+
+        <div className="mt-20 flex justify-center pb-8">
+          <div className="relative max-w-2xl rounded-2xl border border-primary/20 bg-primary/5 px-8 py-10 text-center sm:px-12">
+            <span className="absolute left-4 top-4 font-[family-name:var(--font-display)] text-6xl leading-none text-primary/40">
+              &ldquo;
+            </span>
+            <p className="relative z-10 text-lg font-medium italic leading-relaxed text-foreground sm:text-xl">
+              If you trade SMC without Inducement &amp; Liquidity, you are using the wrong concepts
+            </p>
+            <p className="relative z-10 mt-6 font-mono text-sm font-semibold tracking-[0.08em] text-primary">
+              - RasenganTrader -
+            </p>
+            <span className="absolute bottom-[-1rem] right-4 font-[family-name:var(--font-display)] text-6xl leading-none text-primary/40">
+              &rdquo;
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   )
