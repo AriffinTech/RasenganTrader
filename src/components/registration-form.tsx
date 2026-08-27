@@ -28,15 +28,45 @@ export function RegistrationForm({ checkoutUrl, initialOffer }: RegistrationForm
     }
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setSubmitted(true)
 
-    if (usesPaymentGateway && checkoutUrl) {
-      window.location.assign(checkoutUrl)
-      return
+    const formData = new FormData(event.currentTarget)
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string,
+      telegram: formData.get('telegram') as string,
+      offer: selectedOffer,
     }
 
-    setSubmitted(true)
+    if (usesPaymentGateway) {
+      try {
+        const response = await fetch('/api/create-bill', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+
+        if (!response.ok) {
+          throw new Error('Payment gateway error')
+        }
+
+        const result = await response.json()
+        if (result.url) {
+          window.location.assign(result.url)
+          return
+        }
+      } catch (error) {
+        console.error('Payment Error:', error)
+        alert('Maaf, sistem pembayaran sedang mengalami gangguan. Sila cuba sebentar lagi.')
+        setSubmitted(false)
+        return
+      }
+    }
   }
 
   if (submitted) {
@@ -44,10 +74,10 @@ export function RegistrationForm({ checkoutUrl, initialOffer }: RegistrationForm
       <div className="border border-primary bg-secondary p-7 sm:p-10">
         <CheckCircle2 aria-hidden="true" className="size-8 text-primary" />
         <h2 className="mt-6 text-3xl font-semibold tracking-[-0.05em] text-foreground">
-          {selectedOffer === 'account' ? 'Permohonan bantuan mockup diterima.' : 'Pendaftaran mockup diterima.'}
+          {usesPaymentGateway ? 'Memproses pembayaran...' : selectedOffer === 'account' ? 'Permohonan bantuan diterima.' : 'Pendaftaran diterima.'}
         </h2>
         <p className="mt-4 max-w-lg leading-7 text-[color:var(--color-ink-soft)]">
-          Terima kasih. {offer.title} telah dipilih untuk mockup ini.
+          {usesPaymentGateway ? 'Sila tunggu, anda sedang dibawa ke portal pembayaran yang selamat.' : `Terima kasih. Anda telah memilih ${offer.title}.`}
         </p>
         <Link href="/" className="mt-8 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary hover:text-foreground">
           <ArrowLeft aria-hidden="true" className="size-4" />
@@ -92,14 +122,18 @@ export function RegistrationForm({ checkoutUrl, initialOffer }: RegistrationForm
           Nombor telefon
           <input required name="phone" type="tel" autoComplete="tel" className="min-h-11 border border-border bg-background px-3 text-base font-normal text-foreground outline-none transition-colors focus:border-primary" />
         </label>
+        <label className="grid gap-2 text-sm font-medium text-foreground">
+          Username Telegram
+          <input required name="telegram" type="text" placeholder="@username" className="min-h-11 border border-border bg-background px-3 text-base font-normal text-foreground outline-none transition-colors focus:border-primary" />
+        </label>
       </div>
 
-      <button type="submit" className="enroll-solid mt-8 w-full px-5 text-sm font-semibold">
-        {usesPaymentGateway ? 'Teruskan ke pembayaran' : selectedOffer === 'account' ? 'Hantar permohonan bantuan mockup' : 'Hantar pendaftaran mockup'}
+      <button type="submit" disabled={submitted} className="enroll-solid mt-8 w-full px-5 text-sm font-semibold disabled:opacity-50">
+        {submitted ? 'Memproses...' : usesPaymentGateway ? 'Teruskan ke pembayaran' : 'Hantar permohonan'}
         <ArrowRight aria-hidden="true" className="size-4" />
       </button>
       <p className="mt-4 text-xs leading-5 text-muted-foreground">
-        {usesPaymentGateway ? 'Anda akan dibawa ke payment gateway yang selamat.' : 'Ini ialah mockup; tiada pembayaran atau data dihantar.'}
+        {usesPaymentGateway ? 'Anda akan dibawa ke payment gateway (Billplz) yang selamat.' : 'Tiada pembayaran diperlukan untuk permohonan ini.'}
       </p>
     </form>
   )
