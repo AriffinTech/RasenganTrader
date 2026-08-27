@@ -1,33 +1,54 @@
 import { getClassesData } from "@/lib/sheets";
+import { EnrollmentLink } from "@/components/enrollment-link";
 
 export default async function ClassSchedule() {
   const classes = await getClassesData();
 
   if (!classes || classes.length === 0) {
-    return (
-      <div className="text-center py-10">
-        <p className="text-muted-foreground">No class schedule available at the moment.</p>
-      </div>
-    );
+    return null;
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {classes.map((item: { name: string, date: string, price: string, status: string }, index: number) => (
-        <div key={index} className="border border-border/50 rounded-lg p-6 bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
-          <h3 className="font-bold text-xl mb-2">{item.name}</h3>
-          <p className="text-muted-foreground mb-4 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
-            {item.date}
-          </p>
-          <div className="flex justify-between items-center mt-6 pt-4 border-t border-border/50">
-            <span className="font-bold text-lg">{item.price}</span>
-            <span className={`px-3 py-1 rounded-full text-xs font-medium ${item.status.toLowerCase() === 'full' ? 'bg-destructive/10 text-destructive' : 'bg-primary/10 text-primary'}`}>
-              {item.status}
-            </span>
-          </div>
-        </div>
-      ))}
+    <div className="grid gap-4 md:grid-cols-2">
+      {classes.map((item: { name: string, date: string, price: string, status: string }, index: number) => {
+        const isCoaching = item.name.toLowerCase().includes("coaching");
+        const offerType = isCoaching ? "coaching" : "course";
+        const isFull = item.status.toLowerCase() === "full";
+        
+        // Use primary border for coaching, default border for others to match original design
+        const borderClass = isCoaching ? "border-primary" : "border-border";
+
+        return (
+          <article key={index} className={`border ${borderClass} bg-secondary p-6 sm:p-8 relative overflow-hidden`}>
+            {/* Status Badge */}
+            <div className="absolute top-6 right-6">
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${isFull ? 'bg-destructive/10 text-destructive' : 'bg-primary/10 text-primary'}`}>
+                {item.status}
+              </span>
+            </div>
+
+            <p className="font-mono text-xs tracking-[0.14em] text-primary uppercase">
+              {isCoaching ? "PERSONAL COACHING" : "CLASS OFFER"}
+            </p>
+            <h3 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-foreground">{item.name}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">Next Session: {item.date}</p>
+            
+            <p className="mt-8 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-[-0.06em] text-foreground">
+              {item.price}
+            </p>
+            
+            {!isFull ? (
+              <EnrollmentLink offer={offerType} variant={isCoaching ? "outline" : "solid"} className="mt-7 px-5 text-sm font-semibold">
+                {isCoaching ? "Mohon Coaching" : "Daftar Kelas"}
+              </EnrollmentLink>
+            ) : (
+              <button disabled className="mt-7 px-5 text-sm font-semibold inline-flex items-center justify-center whitespace-nowrap rounded-md ring-offset-background transition-colors h-10 bg-muted text-muted-foreground cursor-not-allowed">
+                Penuh (Sold Out)
+              </button>
+            )}
+          </article>
+        );
+      })}
     </div>
   );
 }

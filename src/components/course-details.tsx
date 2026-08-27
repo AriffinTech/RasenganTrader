@@ -1,5 +1,6 @@
 import { EnrollmentLink } from '@/components/enrollment-link'
 import { coachingOffer, courseOffer } from '@/lib/course'
+import ClassSchedule from '@/components/class-schedule'
 
 export function CourseDetails() {
   return (
@@ -56,24 +57,8 @@ export function CourseDetails() {
           </aside>
         </div>
 
-        <div className="grid gap-4 border-t border-border pt-8 md:grid-cols-2">
-          <article className="border border-border bg-secondary p-6 sm:p-8">
-            <p className="font-mono text-xs tracking-[0.14em] text-primary">CLASS OFFER</p>
-            <h3 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-foreground">{courseOffer.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">Next Class: {courseOffer.nextClass}</p>
-            <p className="mt-8 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-[-0.06em] text-foreground">{courseOffer.price}</p>
-            <EnrollmentLink offer="course" className="mt-7 px-5 text-sm font-semibold">Daftar Kelas</EnrollmentLink>
-          </article>
-          <article className="border border-primary bg-secondary p-6 sm:p-8">
-            <p className="font-mono text-xs tracking-[0.14em] text-primary">PERSONAL COACHING</p>
-            <h3 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-foreground">{coachingOffer.title}</h3>
-            <ul className="mt-5 space-y-2 text-sm leading-6 text-[color:var(--color-ink-soft)]">
-              {coachingOffer.inclusions.slice(0, 2).map((inclusion) => <li key={inclusion}>{inclusion}</li>)}
-            </ul>
-            <p className="mt-5 inline-flex border border-primary px-3 py-1 font-mono text-[0.66rem] tracking-[0.08em] text-primary">Only 2 slots per month</p>
-            <p className="mt-6 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-[-0.06em] text-foreground">{coachingOffer.price}</p>
-            <EnrollmentLink offer="coaching" variant="outline" className="mt-7 px-5 text-sm font-semibold">Mohon Coaching</EnrollmentLink>
-          </article>
+        <div className="border-t border-border pt-8">
+          <ClassSchedule />
         </div>
       </div>
     </section>

@@ -21,13 +21,7 @@ export default function Home() {
         <PainPoints />
         <CourseMap />
         <CourseDetails />
-        <section className="py-16 md:py-24 container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Jadual Kelas</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">Semak jadual kelas akan datang dan daftar sekarang. Tempat adalah terhad.</p>
-          </div>
-          <ClassSchedule />
-        </section>
+
         <Founder />
         <Feedback />
         <AccountOpening />
