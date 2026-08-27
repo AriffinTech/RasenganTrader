@@ -19,7 +19,7 @@ export function RegistrationForm({ checkoutUrl, initialOffer }: RegistrationForm
   const [selectedOffer, setSelectedOffer] = useState<RegistrationOfferKey>(initialOffer)
   const [submitted, setSubmitted] = useState(false)
   const offer = registrationOffers[selectedOffer]
-  const usesPaymentGateway = selectedOffer !== 'account' && Boolean(checkoutUrl)
+  const usesPaymentGateway = selectedOffer !== 'account'
 
   function handleOfferChange(event: ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value
