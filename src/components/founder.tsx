@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import founderPortrait from '../../photo_2026-08-25_00-38-51.jpg'
+import founderPortrait from '../../photo_2026-09-14_10-27-31.jpg'
 
 export function Founder() {
   return (
