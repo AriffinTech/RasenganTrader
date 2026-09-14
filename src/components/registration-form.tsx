@@ -11,11 +11,10 @@ import {
 } from '@/lib/course'
 
 type RegistrationFormProps = {
-  checkoutUrl?: string
   initialOffer: RegistrationOfferKey
 }
 
-export function RegistrationForm({ checkoutUrl, initialOffer }: RegistrationFormProps) {
+export function RegistrationForm({ initialOffer }: RegistrationFormProps) {
   const [selectedOffer, setSelectedOffer] = useState<RegistrationOfferKey>(initialOffer)
   const [submitted, setSubmitted] = useState(false)
   const offer = registrationOffers[selectedOffer]
@@ -97,8 +96,8 @@ export function RegistrationForm({ checkoutUrl, initialOffer }: RegistrationForm
       <label className="mt-7 grid gap-2 text-sm font-medium text-foreground">
         Pilihan anda
         <select value={selectedOffer} onChange={handleOfferChange} name="offer" className="min-h-11 border border-border bg-background px-3 text-base font-normal text-foreground outline-none transition-colors focus:border-primary">
-          <option value="course">{registrationOffers.course.title} — {registrationOffers.course.price}</option>
-          <option value="coaching">{registrationOffers.coaching.title} — {registrationOffers.coaching.price}</option>
+          <option value="saham-101">{registrationOffers['saham-101'].title} - {registrationOffers['saham-101'].price}</option>
+          <option value="trading-clinic">{registrationOffers['trading-clinic'].title} - {registrationOffers['trading-clinic'].price}</option>
           <option value="account">{registrationOffers.account.title}</option>
         </select>
       </label>
@@ -135,6 +134,7 @@ export function RegistrationForm({ checkoutUrl, initialOffer }: RegistrationForm
       <p className="mt-4 text-xs leading-5 text-muted-foreground">
         {usesPaymentGateway ? 'Anda akan dibawa ke payment gateway (Billplz) yang selamat.' : 'Tiada pembayaran diperlukan untuk permohonan ini.'}
       </p>
+      {usesPaymentGateway ? <p className="mt-2 text-xs leading-5 text-muted-foreground">Bayaran yang telah dibuat adalah non-refundable.</p> : null}
     </form>
   )
 }

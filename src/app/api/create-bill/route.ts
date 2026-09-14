@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { rateLimit } from '@/lib/rate-limit'
+import { registrationOffers } from '@/lib/course'
 
 export async function POST(request: Request) {
   try {
@@ -13,17 +14,30 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { name, email, phone, telegram, offer } = body
 
+    if (
+      typeof name !== 'string' || name.trim().length < 2 || name.length > 120 ||
+      typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+      typeof phone !== 'string' || phone.trim().length < 5 || phone.length > 40 ||
+      typeof telegram !== 'string' || telegram.trim().length < 2 || telegram.length > 80
+    ) {
+      return NextResponse.json({ error: 'Invalid registration details' }, { status: 400 })
+    }
+
+    if (offer === 'fast-track') {
+      return NextResponse.json({ error: 'Registration is not open for this offer' }, { status: 409 })
+    }
+
     // Determine price based on offer type
     let amount = 0
-    if (offer === 'course') {
-      amount = 49900 // RM499.00 in cents
-    } else if (offer === 'coaching') {
-      amount = 160000 // RM1,600.00 in cents
+    if (offer === 'saham-101') {
+      amount = 17900 // RM179.00 in cents
+    } else if (offer === 'trading-clinic') {
+      amount = 10000 // RM100.00 in cents
     } else {
       return NextResponse.json({ error: 'Invalid offer selected' }, { status: 400 })
     }
 
-    const description = `Pendaftaran RasenganTrader: ${offer.toUpperCase()} (${telegram})`
+    const description = `Pendaftaran RasenganTrader: ${registrationOffers[offer as keyof typeof registrationOffers].title} (${telegram})`
 
     const billplzUrl = process.env.BILLPLZ_API_URL || 'https://www.billplz-sandbox.com/api/v3'
     const secretKey = process.env.BILLPLZ_SECRET_KEY

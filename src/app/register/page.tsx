@@ -4,8 +4,7 @@ import { ArrowLeft } from 'lucide-react'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/ui/header-1'
 import { RegistrationForm } from '@/components/registration-form'
-import { courseOffer, isRegistrationOffer, registrationOffers } from '@/lib/course'
-import { enrollment } from '@/lib/site-config'
+import { coachingOffer, courseOffer, isRegistrationOffer, registrationOffers, saham101Offer } from '@/lib/course'
 
 type RegisterPageProps = {
   searchParams: Promise<{ offer?: string | string[] }>
@@ -14,7 +13,7 @@ type RegisterPageProps = {
 export default async function RegisterPage({ searchParams }: RegisterPageProps) {
   const requestedOffer = (await searchParams).offer
   const offerValue = Array.isArray(requestedOffer) ? requestedOffer[0] : requestedOffer
-  const selectedOffer = isRegistrationOffer(offerValue) ? offerValue : 'course'
+  const selectedOffer = isRegistrationOffer(offerValue) ? offerValue : 'saham-101'
   const offer = registrationOffers[selectedOffer]
 
   return (
@@ -30,16 +29,38 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
           <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.72fr)] lg:items-start">
             <div>
               <p className="font-mono text-xs font-medium tracking-[0.16em] text-primary">
-                {selectedOffer === 'course' ? 'NEXT CLASS · ' + courseOffer.nextClass.toUpperCase() : 'RASENGANTRADER'}
+                {selectedOffer === 'fast-track' ? `OPENING SOON · ${courseOffer.nextClass.toUpperCase()}` : 'RASENGANTRADER'}
               </p>
-              <h1 className="mt-5 max-w-[11ch] text-[clamp(3rem,6vw,6.5rem)] font-semibold leading-[0.93] tracking-[-0.075em] text-foreground">
+              <h1 className="mt-5 max-w-[14ch] text-[clamp(3rem,6vw,6.5rem)] font-semibold leading-[0.93] tracking-[-0.075em] text-foreground">
                 {offer.title}
               </h1>
               <p className="mt-7 max-w-[58ch] text-lg leading-8 text-[color:var(--color-ink-soft)]">
                 {offer.description}
               </p>
 
-              {selectedOffer === 'course' ? (
+              {selectedOffer === 'saham-101' ? (
+                <div className="mt-12 grid gap-6 border-y border-border py-7 sm:grid-cols-2">
+                  <div>
+                    <p className="font-mono text-xs text-primary">JADUAL</p>
+                    <h2 className="mt-3 text-xl font-semibold tracking-[-0.04em] text-foreground">{saham101Offer.date}</h2>
+                    <p className="mt-3 text-sm leading-6 text-muted-foreground">{saham101Offer.time}</p>
+                  </div>
+                  <div>
+                    <p className="font-mono text-xs text-primary">CONTENT</p>
+                    <ul className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
+                      {saham101Offer.topics.map((topic) => <li key={topic}>• {topic}</li>)}
+                    </ul>
+                  </div>
+                </div>
+              ) : selectedOffer === 'trading-clinic' ? (
+                <div className="mt-12 border-y border-border py-7">
+                  <p className="font-mono text-xs text-primary">SESSION INI COVER</p>
+                  <ul className="mt-4 grid gap-2 text-sm leading-6 text-muted-foreground sm:grid-cols-2">
+                    {coachingOffer.topics.map((topic) => <li key={topic}>• {topic}</li>)}
+                  </ul>
+                  <p className="mt-5 text-sm leading-6 text-muted-foreground">{coachingOffer.note}</p>
+                </div>
+              ) : selectedOffer === 'fast-track' ? (
                 <div className="mt-12 grid gap-6 border-y border-border py-7 sm:grid-cols-2">
                   {courseOffer.modules.map((module) => (
                     <div key={module.number}>
@@ -52,7 +73,16 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
               ) : null}
             </div>
 
-            <RegistrationForm checkoutUrl={enrollment.url} initialOffer={selectedOffer} />
+            {selectedOffer === 'fast-track' ? (
+              <div className="border border-primary bg-secondary p-7 sm:p-10">
+                <p className="font-mono text-xs tracking-[0.14em] text-primary">OPENING SOON</p>
+                <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-foreground">Pendaftaran dibuka pada November 2026.</h2>
+                <p className="mt-4 leading-7 text-[color:var(--color-ink-soft)]">Sila kembali semula apabila pendaftaran Fast Track dibuka.</p>
+                <Link href="/#kelas" className="enroll-outline mt-8 inline-flex px-5 text-sm font-semibold">Lihat kelas yang tersedia</Link>
+              </div>
+            ) : (
+              <RegistrationForm initialOffer={selectedOffer} />
+            )}
           </div>
         </div>
       </main>

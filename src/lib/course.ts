@@ -1,9 +1,11 @@
-export type RegistrationOfferKey = 'course' | 'coaching' | 'account'
+export type RegistrationOfferKey = 'fast-track' | 'saham-101' | 'trading-clinic' | 'account'
+
+export type ClassStatus = 'open' | 'opening-soon' | 'full'
 
 export const courseOffer = {
   title: 'True SMC Fast Track Course',
   educator: 'Dr Hanis Hanafi',
-  nextClass: 'November / December',
+  nextClass: 'November 2026',
   price: 'RM499',
   modules: [
     {
@@ -47,22 +49,84 @@ export const courseOffer = {
   },
 } as const
 
-export const coachingOffer = {
-  title: '1-1 Personal Online Coaching',
-  price: 'RM1,600',
-  inclusions: ['10x sessions', '1 hour per session', 'Only 2 slots per month'],
+export const saham101Offer = {
+  title: 'Saham 101: Kelas Khas untuk Beginner',
+  date: '26 & 27 September 2026',
+  time: '9.30am–12pm, 9–11pm',
+  price: 'RM179',
+  topics: [
+    'Pengenalan Saham',
+    'Technical Analysis: Basic & Intermediate',
+    'Pengenalan IPO',
+    'Risk management',
+  ],
+  bonuses: [
+    'Support Group selama 6 bulan',
+    'Kajian Saham Menarik setiap minggu',
+    'Class Recording',
+  ],
 } as const
 
+export const coachingOffer = {
+  title: 'Trading Clinic',
+  price: 'RM100 / session',
+  inclusions: ['1-1 online personal coaching', '1 hour per session', '3 slots per month'],
+  topics: [
+    'Apa-apa soalan trading',
+    'TA & chart analysis',
+    'Review trades',
+    'Kenalpasti mistakes',
+    'EP / CL / TP review',
+    'Trading psychology',
+    'Risk management',
+    'Strategy discussion',
+    'Improve trading plan',
+  ],
+  note: 'Trading Clinic ini tidak akan ajar teknik advance True SMC (kecuali Alumni).',
+} as const
+
+export const defaultClassSchedule = [
+  {
+    offerId: 'fast-track' as const,
+    name: courseOffer.title,
+    date: courseOffer.nextClass,
+    price: courseOffer.price,
+    status: 'Opening Soon' as const,
+    availability: '',
+  },
+  {
+    offerId: 'saham-101' as const,
+    name: saham101Offer.title,
+    date: `${saham101Offer.date} · ${saham101Offer.time}`,
+    price: saham101Offer.price,
+    status: 'Open' as const,
+    availability: '',
+  },
+  {
+    offerId: 'trading-clinic' as const,
+    name: coachingOffer.title,
+    date: 'By appointment · 1 hour per session',
+    price: coachingOffer.price,
+    status: 'Open' as const,
+    availability: '3 slots available',
+  },
+] as const
+
 export const registrationOffers = {
-  course: {
+  'fast-track': {
     title: courseOffer.title,
     price: courseOffer.price,
     description: 'Pendaftaran untuk kelas True SMC Fast Track Course.',
   },
-  coaching: {
+  'saham-101': {
+    title: saham101Offer.title,
+    price: saham101Offer.price,
+    description: 'Kelas khas untuk beginner yang mahu memahami asas saham dan analisis teknikal.',
+  },
+  'trading-clinic': {
     title: coachingOffer.title,
     price: coachingOffer.price,
-    description: 'Permohonan untuk sesi personal online coaching.',
+    description: '1-1 online personal coaching bersama RasenganTrader selama 1 jam.',
   },
   account: {
     title: 'Buka Akaun',
@@ -72,5 +136,9 @@ export const registrationOffers = {
 } as const
 
 export function isRegistrationOffer(value: string | undefined): value is RegistrationOfferKey {
-  return value === 'course' || value === 'coaching' || value === 'account'
+  return value === 'fast-track' || value === 'saham-101' || value === 'trading-clinic' || value === 'account'
+}
+
+export function isPaidRegistrationOffer(value: RegistrationOfferKey): value is Exclude<RegistrationOfferKey, 'account'> {
+  return value !== 'account'
 }

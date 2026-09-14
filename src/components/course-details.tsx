@@ -1,5 +1,4 @@
-import { EnrollmentLink } from '@/components/enrollment-link'
-import { coachingOffer, courseOffer } from '@/lib/course'
+import { courseOffer } from '@/lib/course'
 import ClassSchedule from '@/components/class-schedule'
 
 export function CourseDetails() {
@@ -59,6 +58,9 @@ export function CourseDetails() {
 
         <div className="border-t border-border pt-8">
           <ClassSchedule />
+          <p className="mt-6 text-xs leading-5 text-muted-foreground">
+            Bayaran yang telah dibuat adalah non-refundable.
+          </p>
         </div>
       </div>
     </section>

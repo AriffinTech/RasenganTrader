@@ -17,7 +17,7 @@ export function EnrollmentLink({
   className,
   variant = 'solid',
   showIcon = true,
-  offer = 'course',
+  offer = 'saham-101',
 }: EnrollmentLinkProps) {
   const baseClass = variant === 'solid' ? 'enroll-solid' : 'enroll-outline'
 
