@@ -19,6 +19,7 @@ function inferOfferId(name: string, explicitId?: string): RegistrationOfferKey |
 
   if (value === 'fast-track' || value.includes('fast track') || value.includes('true smc')) return 'fast-track'
   if (value === 'saham-101' || value.includes('saham 101')) return 'saham-101'
+  if (value === 'personal-coaching' || value.includes('personal coaching')) return 'personal-coaching'
   if (value === 'trading-clinic' || value.includes('trading clinic') || value.includes('coaching')) return 'trading-clinic'
   return undefined
 }
@@ -71,8 +72,12 @@ export async function getClassesData(): Promise<ClassScheduleItem[]> {
       name: fallback.name,
       date: fallback.date,
       price: fallback.price,
-      status: fallback.offerId === 'fast-track' ? 'Opening Soon' : getRowValue(row, 'Status') || fallback.status,
-      availability: getRowValue(row, 'Availability', 'Slots Remaining', 'Remaining') || fallback.availability,
+      status: fallback.offerId === 'fast-track' || fallback.offerId === 'trading-clinic'
+        ? fallback.status
+        : getRowValue(row, 'Status') || fallback.status,
+      availability: fallback.offerId === 'trading-clinic'
+        ? ''
+        : getRowValue(row, 'Availability', 'Slots Remaining', 'Remaining') || fallback.availability,
     }
   })
 }

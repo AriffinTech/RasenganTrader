@@ -31,8 +31,10 @@ export async function POST(request: Request) {
     let amount = 0
     if (offer === 'saham-101') {
       amount = 17900 // RM179.00 in cents
+    } else if (offer === 'personal-coaching') {
+      amount = 160000 // RM1,600.00 in cents
     } else if (offer === 'trading-clinic') {
-      amount = 10000 // RM100.00 in cents
+      amount = 12000 // RM120.00 in cents
     } else {
       return NextResponse.json({ error: 'Invalid offer selected' }, { status: 400 })
     }

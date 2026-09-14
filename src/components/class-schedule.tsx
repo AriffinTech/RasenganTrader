@@ -1,5 +1,5 @@
 import { EnrollmentLink } from '@/components/enrollment-link'
-import { coachingOffer, saham101Offer } from '@/lib/course'
+import { personalCoachingOffer, saham101Offer, tradingClinicOffer } from '@/lib/course'
 import { getClassesData } from '@/lib/sheets'
 
 function normaliseStatus(status: string) {
@@ -18,7 +18,7 @@ export default async function ClassSchedule() {
         const isFull = status === 'full' || status === 'sold-out'
         const isOpeningSoon = status === 'opening-soon' || status === 'opening'
         const isUnavailable = isFull || isOpeningSoon
-        const isCoaching = item.offerId === 'trading-clinic'
+        const isCoaching = item.offerId === 'personal-coaching' || item.offerId === 'trading-clinic'
         const borderClass = isCoaching ? 'border-primary' : 'border-border'
         const statusLabel = isOpeningSoon ? 'Opening Soon' : isFull ? 'Full' : item.status || 'Open'
 
@@ -31,25 +31,34 @@ export default async function ClassSchedule() {
             </div>
 
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
-              {isCoaching ? 'TRADING CLINIC' : item.offerId === 'saham-101' ? 'BEGINNER CLASS' : 'TRUE SMC FAST TRACK'}
+              {item.offerId === 'personal-coaching' ? 'PERSONAL COACHING' : item.offerId === 'trading-clinic' ? 'TRADING CLINIC' : item.offerId === 'saham-101' ? 'BEGINNER CLASS' : 'TRUE SMC FAST TRACK'}
             </p>
             <h3 className="mt-4 max-w-[22ch] text-2xl font-semibold tracking-[-0.05em] text-foreground">{item.name}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{item.date}</p>
 
             {item.availability ? <p className="mt-3 text-sm font-medium text-primary">{item.availability}</p> : null}
 
+            {item.offerId === 'personal-coaching' ? (
+              <div className="mt-6 text-sm leading-6 text-[color:var(--color-ink-soft)]">
+                <p className="font-semibold text-foreground">Pakej</p>
+                <ul className="mt-2 space-y-1">
+                  {personalCoachingOffer.inclusions.map((inclusion) => <li key={inclusion}>- {inclusion}</li>)}
+                </ul>
+              </div>
+            ) : null}
+
             {item.offerId === 'saham-101' ? (
               <div className="mt-6 space-y-5 text-sm leading-6 text-[color:var(--color-ink-soft)]">
                 <div>
                   <p className="font-semibold text-foreground">Content</p>
                   <ul className="mt-2 space-y-1">
-                    {saham101Offer.topics.map((topic) => <li key={topic}>• {topic}</li>)}
+                    {saham101Offer.topics.map((topic) => <li key={topic}>- {topic}</li>)}
                   </ul>
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">Bonus</p>
                   <ul className="mt-2 space-y-1">
-                    {saham101Offer.bonuses.map((bonus) => <li key={bonus}>• {bonus}</li>)}
+                    {saham101Offer.bonuses.map((bonus) => <li key={bonus}>- {bonus}</li>)}
                   </ul>
                 </div>
               </div>
@@ -59,9 +68,9 @@ export default async function ClassSchedule() {
               <div className="mt-6 text-sm leading-6 text-[color:var(--color-ink-soft)]">
                 <p className="font-semibold text-foreground">Session ini cover</p>
                 <ul className="mt-2 grid gap-1 sm:grid-cols-2">
-                  {coachingOffer.topics.map((topic) => <li key={topic}>• {topic}</li>)}
+                  {tradingClinicOffer.topics.map((topic) => <li key={topic}>- {topic}</li>)}
                 </ul>
-                <p className="mt-4 text-xs leading-5 text-muted-foreground">{coachingOffer.note}</p>
+                <p className="mt-4 text-xs leading-5 text-muted-foreground">{tradingClinicOffer.note}</p>
               </div>
             ) : null}
 
