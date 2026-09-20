@@ -51,7 +51,7 @@ export const courseOffer = {
 
 export const saham101Offer = {
   title: 'Saham 101: Kelas Khas untuk Beginner',
-  date: '26 & 27 September 2026',
+  date: '3 & 4 Oktober 2026',
   time: '9.30am–12pm, 9–11pm',
   price: 'RM179',
   topics: [
@@ -70,7 +70,12 @@ export const saham101Offer = {
 export const personalCoachingOffer = {
   title: '1-1 Personal Online Coaching',
   price: 'RM1,600',
-  inclusions: ['10x sessions', '1 hour per session'],
+  inclusions: [
+    'Belajar teknik True Smart Money Concept mengikut pace anda',
+    '10x sessions',
+    '1 hour per session',
+    'Jika pembelajaran selesai dan ada baki sesi, boleh request utk live analysis session',
+  ],
 } as const
 
 export const tradingClinicOffer = {
@@ -109,7 +114,7 @@ export const defaultClassSchedule = [
     date: '10x sessions · 1 hour per session',
     price: personalCoachingOffer.price,
     status: 'Open' as const,
-    availability: '',
+    availability: '3 slot per month',
   },
   {
     offerId: 'saham-101' as const,

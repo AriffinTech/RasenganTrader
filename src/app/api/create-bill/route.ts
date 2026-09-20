@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       mobile: phone,
       amount: amount,
       callback_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/webhook/billplz`,
-      redirect_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/terima-kasih?status=success`,
+      redirect_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/terima-kasih`,
       reference_1_label: 'Telegram',
       reference_1: telegram,
       reference_2_label: 'Offer',

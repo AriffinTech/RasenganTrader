@@ -14,7 +14,7 @@ const platforms = [
     link: 'https://start.moomoo.com/0iuzT1',
     features: [
       'Trade saham Bursa & US',
-      'Dapat Welcome Reward'
+      'Dapatkan Welcome Reward: First Deposit minimum RM1,000 menggunakan code "RT13"'
     ]
   },
   { 
