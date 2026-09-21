@@ -30,11 +30,13 @@ export async function POST(request: Request) {
     // Determine price based on offer type
     let amount = 0
     if (offer === 'saham-101') {
-      amount = 17900 // RM179.00 in cents
+      amount = 19900 // RM199.00 in cents
     } else if (offer === 'personal-coaching') {
-      amount = 160000 // RM1,600.00 in cents
-    } else if (offer === 'trading-clinic') {
+      amount = 180000 // RM1,800.00 in cents
+    } else if (offer === 'trading-clinic-online') {
       amount = 12000 // RM120.00 in cents
+    } else if (offer === 'trading-clinic-f2f') {
+      amount = 18000 // RM180.00 in cents
     } else {
       return NextResponse.json({ error: 'Invalid offer selected' }, { status: 400 })
     }

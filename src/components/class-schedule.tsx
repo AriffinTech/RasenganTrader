@@ -1,5 +1,5 @@
 import { EnrollmentLink } from '@/components/enrollment-link'
-import { personalCoachingOffer, saham101Offer, tradingClinicOffer } from '@/lib/course'
+import { personalCoachingOffer, saham101Offer, tradingClinicOnlineOffer } from '@/lib/course'
 import { getClassesData } from '@/lib/sheets'
 
 function normaliseStatus(status: string) {
@@ -18,7 +18,7 @@ export default async function ClassSchedule() {
         const isFull = status === 'full' || status === 'sold-out'
         const isOpeningSoon = status === 'opening-soon' || status === 'opening'
         const isUnavailable = isFull || isOpeningSoon
-        const isCoaching = item.offerId === 'personal-coaching' || item.offerId === 'trading-clinic'
+        const isCoaching = item.offerId === 'personal-coaching' || item.offerId.startsWith('trading-clinic')
         const borderClass = isCoaching ? 'border-primary' : 'border-border'
         const statusLabel = isOpeningSoon ? 'Opening Soon' : isFull ? 'Full' : item.status || 'Open'
 
@@ -31,7 +31,7 @@ export default async function ClassSchedule() {
             </div>
 
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
-              {item.offerId === 'personal-coaching' ? 'PERSONAL COACHING' : item.offerId === 'trading-clinic' ? 'TRADING CLINIC' : item.offerId === 'saham-101' ? 'BEGINNER CLASS' : 'TRUE SMC FAST TRACK'}
+              {item.offerId === 'personal-coaching' ? 'PERSONAL COACHING' : item.offerId.startsWith('trading-clinic') ? 'TRADING CLINIC' : item.offerId === 'saham-101' ? 'BEGINNER CLASS' : 'TRUE SMC FAST TRACK'}
             </p>
             <h3 className="mt-4 max-w-[22ch] text-2xl font-semibold tracking-[-0.05em] text-foreground">{item.name}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{item.date}</p>
@@ -61,16 +61,24 @@ export default async function ClassSchedule() {
                     {saham101Offer.bonuses.map((bonus) => <li key={bonus}>- {bonus}</li>)}
                   </ul>
                 </div>
+                {saham101Offer.exclusiveBonus ? (
+                  <div className="rounded-lg bg-primary/10 p-4 ring-1 ring-primary/20">
+                    <p className="font-semibold text-primary">EXCLUSIVE BONUS: {saham101Offer.exclusiveBonus.title}</p>
+                    <ul className="mt-2 space-y-1 text-[color:var(--color-ink-soft)]">
+                      {saham101Offer.exclusiveBonus.benefits.map((benefit) => <li key={benefit}>- {benefit}</li>)}
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             ) : null}
 
-            {item.offerId === 'trading-clinic' ? (
+            {item.offerId.startsWith('trading-clinic') ? (
               <div className="mt-6 text-sm leading-6 text-[color:var(--color-ink-soft)]">
                 <p className="font-semibold text-foreground">Session ini cover</p>
                 <ul className="mt-2 grid gap-1 sm:grid-cols-2">
-                  {tradingClinicOffer.topics.map((topic) => <li key={topic}>- {topic}</li>)}
+                  {tradingClinicOnlineOffer.topics.map((topic) => <li key={topic}>- {topic}</li>)}
                 </ul>
-                <p className="mt-4 text-xs leading-5 text-muted-foreground">{tradingClinicOffer.note}</p>
+                <p className="mt-4 text-xs leading-5 text-muted-foreground">{tradingClinicOnlineOffer.note}</p>
               </div>
             ) : null}
 

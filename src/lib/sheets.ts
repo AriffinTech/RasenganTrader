@@ -20,7 +20,10 @@ function inferOfferId(name: string, explicitId?: string): RegistrationOfferKey |
   if (value === 'fast-track' || value.includes('fast track') || value.includes('true smc')) return 'fast-track'
   if (value === 'saham-101' || value.includes('saham 101')) return 'saham-101'
   if (value === 'personal-coaching' || value.includes('personal coaching')) return 'personal-coaching'
-  if (value === 'trading-clinic' || value.includes('trading clinic') || value.includes('coaching')) return 'trading-clinic'
+  if (value.includes('trading clinic') || value.includes('coaching')) {
+    if (value.includes('f2f') || value.includes('face to face') || value.includes('jb')) return 'trading-clinic-f2f'
+    return 'trading-clinic-online'
+  }
   return undefined
 }
 
@@ -72,10 +75,10 @@ export async function getClassesData(): Promise<ClassScheduleItem[]> {
       name: fallback.name,
       date: fallback.date,
       price: fallback.price,
-      status: fallback.offerId === 'fast-track' || fallback.offerId === 'trading-clinic'
+      status: fallback.offerId === 'fast-track' || fallback.offerId.startsWith('trading-clinic')
         ? fallback.status
         : getRowValue(row, 'Status') || fallback.status,
-      availability: fallback.offerId === 'trading-clinic'
+      availability: fallback.offerId.startsWith('trading-clinic')
         ? ''
         : getRowValue(row, 'Availability', 'Slots Remaining', 'Remaining') || fallback.availability,
     }

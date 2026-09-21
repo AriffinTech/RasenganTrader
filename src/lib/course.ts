@@ -1,4 +1,4 @@
-export type RegistrationOfferKey = 'fast-track' | 'personal-coaching' | 'saham-101' | 'trading-clinic' | 'account'
+export type RegistrationOfferKey = 'fast-track' | 'personal-coaching' | 'saham-101' | 'trading-clinic-online' | 'trading-clinic-f2f' | 'account'
 
 export type ClassStatus = 'open' | 'opening-soon' | 'full'
 
@@ -53,23 +53,33 @@ export const saham101Offer = {
   title: 'Saham 101: Kelas Khas untuk Beginner',
   date: '3 & 4 Oktober 2026',
   time: '9.30am–12pm, 9–11pm',
-  price: 'RM179',
+  price: 'RM199',
   topics: [
     'Pengenalan Saham',
-    'Technical Analysis: Basic & Intermediate',
     'Pengenalan IPO',
-    'Risk management',
+    'Teknikal Analysis: Basic - Intermediate',
+    'Risk Management + Trading Plan',
+    'Journal',
+    'Top 10 Kesilapan Traders',
   ],
   bonuses: [
-    'Support Group selama 6 bulan',
-    'Kajian Saham Menarik setiap minggu',
+    'Ilmu Common Indicator (EMA, RSI & MACD)',
+    'Kajian Saham Menarik Mingguan',
+    '3 Bulan Support Group',
     'Class Recording',
   ],
+  exclusiveBonus: {
+    title: 'Step By Step Beginner Friendly Setup',
+    benefits: [
+      'Simple & Clear: Mudah difahami & untuk beginner',
+      'Praktikal: Boleh terus diaplikasi dalam market sebenar',
+    ],
+  },
 } as const
 
 export const personalCoachingOffer = {
-  title: '1-1 Personal Online Coaching',
-  price: 'RM1,600',
+  title: '1-1 Online personal coaching (Advance)',
+  price: 'RM1,800',
   inclusions: [
     'Belajar teknik True Smart Money Concept mengikut pace anda',
     '10x sessions',
@@ -78,8 +88,8 @@ export const personalCoachingOffer = {
   ],
 } as const
 
-export const tradingClinicOffer = {
-  title: 'Trading Clinic',
+export const tradingClinicOnlineOffer = {
+  title: 'Trading Clinic (Online)',
   price: 'RM120 / session',
   inclusions: ['1-1 online personal coaching', '1 hour per session'],
   topics: [
@@ -96,8 +106,15 @@ export const tradingClinicOffer = {
   note: 'Trading Clinic ini tidak akan ajar teknik advance True SMC (kecuali Alumni).',
 } as const
 
+export const tradingClinicF2FOffer = {
+  ...tradingClinicOnlineOffer,
+  title: 'Trading Clinic (Face to face - JB)',
+  price: 'RM180 / session',
+  inclusions: ['Face to face personal coaching di JB', '1 hour per session'],
+} as const
+
 // Backwards-compatible alias for components that use the generic coaching name.
-export const coachingOffer = tradingClinicOffer
+export const coachingOffer = tradingClinicOnlineOffer
 
 export const defaultClassSchedule = [
   {
@@ -125,10 +142,18 @@ export const defaultClassSchedule = [
     availability: '',
   },
   {
-    offerId: 'trading-clinic' as const,
-    name: tradingClinicOffer.title,
+    offerId: 'trading-clinic-online' as const,
+    name: tradingClinicOnlineOffer.title,
     date: 'By appointment · 1 hour per session',
-    price: tradingClinicOffer.price,
+    price: tradingClinicOnlineOffer.price,
+    status: 'Open' as const,
+    availability: '',
+  },
+  {
+    offerId: 'trading-clinic-f2f' as const,
+    name: tradingClinicF2FOffer.title,
+    date: 'By appointment · 1 hour per session',
+    price: tradingClinicF2FOffer.price,
     status: 'Open' as const,
     availability: '',
   },
@@ -150,10 +175,15 @@ export const registrationOffers = {
     price: saham101Offer.price,
     description: 'Kelas khas untuk beginner yang mahu memahami asas saham dan analisis teknikal.',
   },
-  'trading-clinic': {
-    title: tradingClinicOffer.title,
-    price: tradingClinicOffer.price,
+  'trading-clinic-online': {
+    title: tradingClinicOnlineOffer.title,
+    price: tradingClinicOnlineOffer.price,
     description: '1-1 online personal coaching bersama RasenganTrader selama 1 jam.',
+  },
+  'trading-clinic-f2f': {
+    title: tradingClinicF2FOffer.title,
+    price: tradingClinicF2FOffer.price,
+    description: 'Face to face personal coaching di JB selama 1 jam.',
   },
   account: {
     title: 'Buka Akaun',
@@ -163,7 +193,7 @@ export const registrationOffers = {
 } as const
 
 export function isRegistrationOffer(value: string | undefined): value is RegistrationOfferKey {
-  return value === 'fast-track' || value === 'personal-coaching' || value === 'saham-101' || value === 'trading-clinic' || value === 'account'
+  return value === 'fast-track' || value === 'personal-coaching' || value === 'saham-101' || value === 'trading-clinic-online' || value === 'trading-clinic-f2f' || value === 'account'
 }
 
 export function isPaidRegistrationOffer(value: RegistrationOfferKey): value is Exclude<RegistrationOfferKey, 'account'> {

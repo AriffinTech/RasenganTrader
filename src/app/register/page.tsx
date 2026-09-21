@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/ui/header-1'
 import { RegistrationForm } from '@/components/registration-form'
-import { courseOffer, isRegistrationOffer, personalCoachingOffer, registrationOffers, saham101Offer, tradingClinicOffer } from '@/lib/course'
+import { courseOffer, isRegistrationOffer, personalCoachingOffer, registrationOffers, saham101Offer, tradingClinicOnlineOffer } from '@/lib/course'
 
 type RegisterPageProps = {
   searchParams: Promise<{ offer?: string | string[] }>
@@ -59,13 +59,13 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
                     {personalCoachingOffer.inclusions.map((inclusion) => <li key={inclusion}>- {inclusion}</li>)}
                   </ul>
                 </div>
-              ) : selectedOffer === 'trading-clinic' ? (
+              ) : selectedOffer.startsWith('trading-clinic') ? (
                 <div className="mt-12 border-y border-border py-7">
                   <p className="font-mono text-xs text-primary">SESSION INI COVER</p>
                   <ul className="mt-4 grid gap-2 text-sm leading-6 text-muted-foreground sm:grid-cols-2">
-                    {tradingClinicOffer.topics.map((topic) => <li key={topic}>- {topic}</li>)}
+                    {tradingClinicOnlineOffer.topics.map((topic) => <li key={topic}>- {topic}</li>)}
                   </ul>
-                  <p className="mt-5 text-sm leading-6 text-muted-foreground">{tradingClinicOffer.note}</p>
+                  <p className="mt-5 text-sm leading-6 text-muted-foreground">{tradingClinicOnlineOffer.note}</p>
                 </div>
               ) : selectedOffer === 'fast-track' ? (
                 <div className="mt-12 grid gap-6 border-y border-border py-7 sm:grid-cols-2">
