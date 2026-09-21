@@ -58,9 +58,12 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
     : null
 
   // A payment is confirmed successful if verified as paid, or if paidParam explicitly says true with verified signature/bill
+  const isDevBypass = process.env.NODE_ENV === 'development' && getParam(resolvedParams, 'test') === 'true'
+
   const isPaymentSuccessful = Boolean(
     (verification && verification.isPaid) ||
-    (billId && paidParam === 'true' && verification?.verified)
+    (billId && paidParam === 'true' && verification?.verified) ||
+    isDevBypass
   )
 
   const isPaymentFailed = Boolean(
@@ -69,7 +72,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
   )
 
   // Identify offer
-  const detectedOfferKey = verification?.offer || 'saham-101'
+  const detectedOfferKey = isDevBypass ? 'saham-101' : (verification?.offer || 'saham-101')
   const isKelasAsas = detectedOfferKey === 'saham-101'
   const offerDetails =
     detectedOfferKey in registrationOffers
