@@ -7,7 +7,7 @@ import { Footer } from '@/components/footer'
 import { Founder } from '@/components/founder'
 import { AccountOpening } from '@/components/account-opening'
 import { PainPoints } from '@/components/pain-points'
-import { Header } from '@/components/ui/header-1'
+import { Header } from '@/components/ui/header-01'
 import { CredibilityStrip, HeroSection } from '@/components/ui/hero-1'
 
 export default function Home() {

@@ -118,22 +118,6 @@ export const coachingOffer = tradingClinicOnlineOffer
 
 export const defaultClassSchedule = [
   {
-    offerId: 'fast-track' as const,
-    name: courseOffer.title,
-    date: courseOffer.nextClass,
-    price: courseOffer.price,
-    status: 'Opening Soon' as const,
-    availability: '',
-  },
-  {
-    offerId: 'personal-coaching' as const,
-    name: personalCoachingOffer.title,
-    date: '10x sessions · 1 hour per session',
-    price: personalCoachingOffer.price,
-    status: 'Open' as const,
-    availability: '3 slot per month',
-  },
-  {
     offerId: 'saham-101' as const,
     name: saham101Offer.title,
     date: `${saham101Offer.date} · ${saham101Offer.time}`,
@@ -157,19 +141,25 @@ export const defaultClassSchedule = [
     status: 'Open' as const,
     availability: '',
   },
+  {
+    offerId: 'fast-track' as const,
+    name: courseOffer.title,
+    date: courseOffer.nextClass,
+    price: courseOffer.price,
+    status: 'Opening Soon' as const,
+    availability: '',
+  },
+  {
+    offerId: 'personal-coaching' as const,
+    name: personalCoachingOffer.title,
+    date: '10x sessions · 1 hour per session',
+    price: personalCoachingOffer.price,
+    status: 'Open' as const,
+    availability: '3 slot per month',
+  },
 ] as const
 
 export const registrationOffers = {
-  'fast-track': {
-    title: courseOffer.title,
-    price: courseOffer.price,
-    description: 'Pendaftaran untuk kelas True SMC Fast Track Course.',
-  },
-  'personal-coaching': {
-    title: personalCoachingOffer.title,
-    price: personalCoachingOffer.price,
-    description: '1-1 personal online coaching bersama RasenganTrader.',
-  },
   'saham-101': {
     title: saham101Offer.title,
     price: saham101Offer.price,
@@ -184,6 +174,16 @@ export const registrationOffers = {
     title: tradingClinicF2FOffer.title,
     price: tradingClinicF2FOffer.price,
     description: 'Face to face personal coaching di JB selama 1 jam.',
+  },
+  'fast-track': {
+    title: courseOffer.title,
+    price: courseOffer.price,
+    description: 'Pendaftaran untuk kelas True SMC Fast Track Course.',
+  },
+  'personal-coaching': {
+    title: personalCoachingOffer.title,
+    price: personalCoachingOffer.price,
+    description: '1-1 personal online coaching bersama RasenganTrader.',
   },
   account: {
     title: 'Buka Akaun',

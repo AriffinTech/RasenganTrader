@@ -54,6 +54,12 @@ export async function POST(request: Request) {
 
     const authHeader = `Basic ${Buffer.from(`${secretKey}:`).toString('base64')}`
 
+    // Derive app URL: prefer env var, then auto-detect from request headers
+    const appUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      request.headers.get('origin') ||
+      (request.headers.get('host') ? `https://${request.headers.get('host')}` : 'http://localhost:3000')
+
     const billData = {
       collection_id: collectionId,
       description: description,
@@ -61,8 +67,8 @@ export async function POST(request: Request) {
       name: name,
       mobile: phone,
       amount: amount,
-      callback_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/webhook/billplz`,
-      redirect_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/terima-kasih`,
+      callback_url: `${appUrl}/api/webhook/billplz`,
+      redirect_url: `${appUrl}/terima-kasih`,
       reference_1_label: 'Telegram',
       reference_1: telegram,
       reference_2_label: 'Offer',

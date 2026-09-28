@@ -1,3 +1,5 @@
+"use client"
+
 import Image from 'next/image'
 import { ArrowDown } from 'lucide-react'
 
@@ -5,9 +7,8 @@ import { EnrollmentLink } from '@/components/enrollment-link'
 
 export function HeroSection() {
   return (
-    <section className="site-grid relative isolate overflow-hidden border-b border-border">
-      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px rule-fade" />
-      <div className="relative mx-auto flex min-h-[calc(100svh-6.25rem)] max-w-[78rem] flex-col items-center justify-center px-5 pb-12 pt-12 text-center sm:px-8 sm:pb-20 sm:pt-16 lg:pb-28 lg:pt-20">
+    <section className="relative isolate overflow-hidden bg-background">
+      <div className="relative mx-auto flex min-h-[calc(100svh-6.25rem)] max-w-[78rem] flex-col items-center justify-center px-5 pb-16 pt-24 text-center sm:px-8 sm:pb-24 sm:pt-32 lg:pb-32 lg:pt-36">
         <p className="absolute left-5 top-5 font-mono text-[0.65rem] font-medium tracking-[0.18em] text-primary sm:left-8 sm:top-7 sm:text-xs lg:left-12">
           LIQUIDITY IS KING
         </p>
@@ -51,14 +52,14 @@ const proofItems = [
 
 export function CredibilityStrip() {
   return (
-    <section aria-label="Kredibiliti RasenganTrader" className="border-b border-border">
-      <div className="mx-auto grid max-w-[90rem] grid-cols-1 divide-y divide-border px-5 sm:px-8 md:grid-cols-3 md:divide-x md:divide-y-0 lg:px-12">
+    <section aria-label="Kredibiliti RasenganTrader" className="bg-muted/30 py-12 sm:py-16">
+      <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-8 px-5 sm:px-8 md:grid-cols-3 md:gap-12 lg:px-12">
         {proofItems.map(([value, label]) => (
-          <div key={value} className="px-0 py-6 md:px-7 lg:px-10">
-            <p className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-[-0.05em] text-foreground">
+          <div key={value} className="flex flex-col items-center justify-center rounded-2xl bg-background p-6 text-center shadow-sm sm:p-8">
+            <p className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-[-0.05em] text-foreground sm:text-4xl">
               {value}
             </p>
-            <p className="mt-1 font-mono text-[0.66rem] leading-5 tracking-[0.06em] text-muted-foreground">
+            <p className="mt-2 font-mono text-[0.7rem] leading-5 tracking-[0.06em] text-muted-foreground sm:text-xs">
               {label}
             </p>
           </div>

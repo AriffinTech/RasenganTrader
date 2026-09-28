@@ -97,9 +97,10 @@ export function RegistrationForm({ initialOffer }: RegistrationFormProps) {
         Pilihan anda
         <select value={selectedOffer} onChange={handleOfferChange} name="offer" className="min-h-11 border border-border bg-background px-3 text-base font-normal text-foreground outline-none transition-colors focus:border-primary">
           <option value="saham-101">{registrationOffers['saham-101'].title} - {registrationOffers['saham-101'].price}</option>
-          <option value="personal-coaching">{registrationOffers['personal-coaching'].title} - {registrationOffers['personal-coaching'].price}</option>
           <option value="trading-clinic-online">{registrationOffers['trading-clinic-online'].title} - {registrationOffers['trading-clinic-online'].price}</option>
           <option value="trading-clinic-f2f">{registrationOffers['trading-clinic-f2f'].title} - {registrationOffers['trading-clinic-f2f'].price}</option>
+          <option value="fast-track">{registrationOffers['fast-track'].title} - {registrationOffers['fast-track'].price}</option>
+          <option value="personal-coaching">{registrationOffers['personal-coaching'].title} - {registrationOffers['personal-coaching'].price}</option>
           <option value="account">{registrationOffers.account.title}</option>
         </select>
       </label>
