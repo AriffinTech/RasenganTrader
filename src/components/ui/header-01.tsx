@@ -43,20 +43,23 @@ export function Menus() {
 }
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
   if (!mounted) return null;
+  
+  const isDark = resolvedTheme === "dark";
+  
   return (
     <div className="flex flex-col justify-center">
       <div>
         <Toggle
           className="group bg-secondary dark:bg-secondary data-[state=on]:hover:bg-muted cursor-pointer size-9 data-[state=on]:bg-transparent"
-          pressed={theme === "dark"}
-          onPressedChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          pressed={isDark}
+          onPressedChange={() => setTheme(isDark ? "light" : "dark")}
+          aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
         >
           <Moon
             size={16}
@@ -98,7 +101,7 @@ const Header = () => {
           className={cn(
             "mx-auto mt-2 transition-all duration-300",
             isScrolled &&
-              "bg-[oklch(0.141 0.005 285.823)]/50 max-w-5xl rounded-2xl border backdrop-blur-xl px-3",
+              "bg-background/50 max-w-5xl rounded-2xl border backdrop-blur-xl px-3",
           )}
         >
           <div className="relative flex flex-wrap items-center justify-between gap-3 py-3">

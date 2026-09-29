@@ -12,7 +12,8 @@
 
 @layer base {
   * { border-color: var(--color-rule); }
-  html { background: var(--color-paper); color-scheme: dark; scroll-behavior: smooth; }
+  html { background: var(--color-paper); color-scheme: light; scroll-behavior: smooth; }
+  html.dark { color-scheme: dark; }
   body { min-width: 0; overflow-x: clip; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
   ::selection { background: var(--color-accent); color: var(--color-accent-ink); }
   :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; }
