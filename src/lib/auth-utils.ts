@@ -4,7 +4,7 @@ export function getAdminPassword(): string {
     if (process.env.NODE_ENV === 'production') {
       throw new Error('ADMIN_PASSWORD environment variable must be configured in production.')
     }
-    return 'rasengan2026!'
+    return 'rasenganking2026!'
   }
   return pwd
 }
@@ -32,7 +32,7 @@ export function getAdminEmail(): string {
 }
 
 // Backwards-compatible constants for callers
-export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (process.env.NODE_ENV === 'production' ? '' : 'rasengan2026!')
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (process.env.NODE_ENV === 'production' ? '' : 'rasenganking2026!')
 export const ADMIN_SECRET = process.env.ADMIN_SECRET || (process.env.NODE_ENV === 'production' ? '' : 'rt-admin-secret-key-2026')
 export const ADMIN_EMAIL = process.env.ADMIN_EMAIL || (process.env.NODE_ENV === 'production' ? '' : 'admin@rasengantrader.com')
 
