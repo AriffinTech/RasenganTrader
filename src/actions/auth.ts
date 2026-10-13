@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { cookies, headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { getAdminEmail, getAdminPassword, computeAdminToken, verifyAdminToken } from '@/lib/auth-utils'
 import { rateLimit } from '@/lib/rate-limit'
 
@@ -79,15 +80,16 @@ export async function verifyAdminSession() {
     let supabase: any = null
     try {
       supabase = await createClient()
-    } catch {
+    } catch (err: any) {
+      console.warn('verifyAdminSession: createClient notice:', err?.message || err)
       supabase = null
     }
 
     let adminClient: any = null
     try {
-      const { createAdminClient } = await import('@/lib/supabase/admin')
       adminClient = createAdminClient()
-    } catch {
+    } catch (err: any) {
+      console.warn('verifyAdminSession: createAdminClient notice:', err?.message || err)
       adminClient = null
     }
 
@@ -218,7 +220,6 @@ export async function loginAdmin(formData: FormData) {
     } else {
       // Check if email exists in admin_users
       try {
-        const { createAdminClient } = await import('@/lib/supabase/admin')
         const adminClient = createAdminClient()
         const { data } = await adminClient
           .from('admin_users')
