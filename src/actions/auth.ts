@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { cookies, headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
-import { getAdminEmail, getAdminPassword, computeAdminToken } from '@/lib/auth-utils'
+import { getAdminEmail, getAdminPassword, computeAdminToken, verifyAdminToken } from '@/lib/auth-utils'
 import { rateLimit } from '@/lib/rate-limit'
 
 /**
@@ -91,9 +91,36 @@ export async function verifyAdminSession() {
       adminClient = null
     }
 
-    // 1. Check master cookie session
-    if (adminCookie && expectedToken && adminCookie === expectedToken) {
+    // 1. Check master cookie session (supports current token and legacy tokens during transition)
+    const isMasterSession = adminCookie ? await verifyAdminToken(adminCookie) : false
+
+    if (isMasterSession) {
+      // Seamlessly upgrade cookie to current token if signed with legacy credentials
+      if (expectedToken && adminCookie !== expectedToken) {
+        try {
+          cookieStore.set('admin_session', expectedToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
+          })
+        } catch {
+          // Ignore in read-only Server Component context
+        }
+      }
+
       const effectiveClient = adminClient || supabase
+      if (!effectiveClient) {
+        return {
+          authorized: false,
+          error: 'Pangkalan data Supabase tidak dapat diakses. Sila pastikan pelayan dev telah dimulakan semula (restart npm run dev).',
+          user: null,
+          supabase: null,
+          adminClient: null,
+        }
+      }
+
       return {
         authorized: true,
         user: { email: getAdminEmail() },
@@ -112,6 +139,16 @@ export async function verifyAdminSession() {
         const isAdmin = await isUserAdmin(supabase, user)
         if (isAdmin) {
           const effectiveClient = adminClient || supabase
+          if (!effectiveClient) {
+            return {
+              authorized: false,
+              error: 'Pangkalan data Supabase tidak dapat diakses. Sila pastikan pelayan dev telah dimulakan semula (restart npm run dev).',
+              user: null,
+              supabase: null,
+              adminClient: null,
+            }
+          }
+
           return {
             authorized: true,
             user,
@@ -124,7 +161,7 @@ export async function verifyAdminSession() {
 
     return {
       authorized: false,
-      error: 'Akses tidak dibenarkan. Sila log masuk.',
+      error: 'Akses tidak dibenarkan. Sila log masuk sebagai pentadbir.',
       user: null,
       supabase: null,
       adminClient: null,

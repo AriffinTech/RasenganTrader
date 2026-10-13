@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import { computeAdminToken } from '@/lib/auth-utils'
+import { verifyAdminToken } from '@/lib/auth-utils'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -17,8 +17,7 @@ export async function updateSession(request: NextRequest) {
 
   // 1. Check Master / Fallback Admin Session Cookie
   const adminCookie = request.cookies.get('admin_session')?.value
-  const expectedToken = await computeAdminToken()
-  let isVerifiedAdmin = adminCookie === expectedToken
+  let isVerifiedAdmin = await verifyAdminToken(adminCookie)
 
   // 2. Check Supabase Auth session if Supabase is configured
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
