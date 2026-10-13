@@ -8,6 +8,21 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
+# Agent Orchestration & Workflow (MANDATORY)
+
+## Automatic Skill Activation: `t3-orchestrator`
+At the start of **EVERY** conversation, request, or task, you MUST automatically inspect and activate the `t3-orchestrator` skill (`SKILL.md`) using `view_file`:
+- **Path**: `C:\Users\Acer\.t3\userdata\providers\antigravity\ac0a3dfd6dddb20962cecff6ee5fe65e19d3923be20e52c5ab52ff877f7e4c32\config\skills\t3-orchestrator\SKILL.md` (or the equivalent registered path in your available skills).
+- **DO NOT WAIT** for the user to explicitly type `$t3-orchestrator`. Activate and follow it immediately and autonomously.
+- **Act as Technical Lead & Coordinator**: Understand requests, plan execution, and intelligently delegate tasks to the most suitable Gemini models via `delegate_task` to maximize efficiency, quality, and capability.
+- **Model Routing Matrix**:
+  - `gemini-3.8-flash-low` / `gemini-3.8-flash-medium`: Boilerplate, simple CSS/text edits, simple scripts.
+  - `gemini-3.8-flash-high`: Routine implementations, complex frontend UI components, scaffolding.
+  - `gemini-pro-agent`: Deep reasoning, backend architecture, difficult debugging, and security audits.
+- **Security Validation**: Require independent review by `gemini-pro-agent` for authentication, payments (Billplz), Supabase RLS, and critical database operations.
+
+---
+
 # Security Rules
 
 These rules apply to all code generated in this project. They are non-negotiable.

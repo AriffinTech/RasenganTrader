@@ -17,6 +17,7 @@ import {
   TELEGRAM_KELAS_ASAS_INVITE_LINK,
 } from '@/lib/billplz'
 import { registrationOffers, saham101Offer } from '@/lib/course'
+import { getClassSessionByOffer } from '@/lib/db/courses'
 
 type TerimaKasihPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>
@@ -47,6 +48,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
     getParam(resolvedParams, 'billplz[x_signature]') ||
     getParam(resolvedParams, 'x_signature')
   const statusParam = getParam(resolvedParams, 'status')
+  const queryOffer = getParam(resolvedParams, 'offer')
 
   // Verify payment if billId is available
   const verification = billId
@@ -57,10 +59,12 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
       })
     : null
 
-  // A payment is confirmed successful if verified as paid, or if paidParam explicitly says true with verified signature/bill
+  // A payment is confirmed successful if verified as paid, or if paidParam explicitly says true with verified signature/bill, or free code status
+  const isFreeSuccess = statusParam === 'success' || statusParam === 'free_success'
   const isPaymentSuccessful = Boolean(
     (verification && verification.isPaid) ||
-    (billId && paidParam === 'true' && verification?.verified)
+    (billId && paidParam === 'true' && verification?.verified) ||
+    isFreeSuccess
   )
 
   const isPaymentFailed = Boolean(
@@ -69,12 +73,17 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
   )
 
   // Identify offer
-  const detectedOfferKey = verification?.offer || 'saham-101'
-  const isKelasAsas = detectedOfferKey === 'saham-101'
-  const offerDetails =
-    detectedOfferKey in registrationOffers
-      ? registrationOffers[detectedOfferKey as keyof typeof registrationOffers]
-      : registrationOffers['saham-101']
+  const detectedOfferKey = verification?.offer || queryOffer || 'saham-101'
+  const isCoaching = detectedOfferKey === 'personal-coaching' || detectedOfferKey.startsWith('trading-clinic')
+
+  // Fetch dynamic session and effective telegram link
+  const session = await getClassSessionByOffer(detectedOfferKey)
+  const effectiveTelegramLink =
+    session?.telegram_link_override ||
+    session?.course?.default_telegram_link ||
+    TELEGRAM_KELAS_ASAS_INVITE_LINK
+
+  const offerTitle = session?.course?.title || (detectedOfferKey in registrationOffers ? registrationOffers[detectedOfferKey as keyof typeof registrationOffers].title : 'Kelas RasenganTrader')
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -89,7 +98,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
 
               <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
                 <ShieldCheck aria-hidden="true" className="size-4" />
-                PEMBAYARAN DISAHKAN
+                {isFreeSuccess ? 'PENDAFTARAN DISAHKAN' : 'PEMBAYARAN DISAHKAN'}
               </div>
 
               <h1 className="mt-5 text-3xl sm:text-4xl font-semibold tracking-[-0.05em] text-foreground">
@@ -97,7 +106,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
               </h1>
 
               <p className="mt-3 text-base sm:text-lg leading-7 text-[color:var(--color-ink-soft)]">
-                Terima kasih atas pendaftaran anda. Transaksi pembayaran anda telah berjaya diproses dan disahkan oleh sistem.
+                Terima kasih atas pendaftaran anda. Maklumat anda telah berjaya direkodkan oleh sistem.
               </p>
 
               {/* Offer Details Box */}
@@ -106,10 +115,23 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
                   BUTIRAN KELAS
                 </p>
                 <h2 className="mt-2 text-xl font-semibold text-foreground">
-                  {offerDetails.title}
+                  {offerTitle}
                 </h2>
 
-                {isKelasAsas ? (
+                {session ? (
+                  <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <Calendar aria-hidden="true" className="size-4 text-primary shrink-0" />
+                      <span><strong>Jadual:</strong> {session.display_date}</span>
+                    </div>
+                    {session.display_time ? (
+                      <div className="flex items-center gap-2">
+                        <Clock aria-hidden="true" className="size-4 text-primary shrink-0" />
+                        <span><strong>Masa:</strong> {session.display_time}</span>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : detectedOfferKey === 'saham-101' ? (
                   <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                       <Calendar aria-hidden="true" className="size-4 text-primary shrink-0" />
@@ -122,16 +144,20 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
                   </div>
                 ) : null}
 
-                {verification?.name || verification?.telegram ? (
+                {verification?.name || verification?.telegram || getParam(resolvedParams, 'name') || getParam(resolvedParams, 'telegram') ? (
                   <div className="mt-4 border-t border-border pt-4 text-xs text-muted-foreground">
-                    {verification.name ? <p>Nama: <span className="font-medium text-foreground">{verification.name}</span></p> : null}
-                    {verification.telegram ? <p className="mt-1">Telegram: <span className="font-medium text-foreground">{verification.telegram}</span></p> : null}
+                    {(verification?.name || getParam(resolvedParams, 'name')) ? (
+                      <p>Nama: <span className="font-medium text-foreground">{verification?.name || getParam(resolvedParams, 'name')}</span></p>
+                    ) : null}
+                    {(verification?.telegram || getParam(resolvedParams, 'telegram')) ? (
+                      <p className="mt-1">Telegram: <span className="font-medium text-foreground">{verification?.telegram || getParam(resolvedParams, 'telegram')}</span></p>
+                    ) : null}
                   </div>
                 ) : null}
               </div>
 
               {/* Telegram Action Section */}
-              {isKelasAsas ? (
+              {!isCoaching ? (
                 <div className="mt-8 rounded-xl border border-primary/30 bg-primary/5 p-6 sm:p-8 text-center">
                   <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-primary">
                     LANGKAH SETERUSNYA
@@ -145,7 +171,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
 
                   <div className="mt-6">
                     <a
-                      href={TELEGRAM_KELAS_ASAS_INVITE_LINK}
+                      href={effectiveTelegramLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="enroll-solid mx-auto inline-flex h-12 w-full max-w-md items-center justify-center gap-3 rounded-md px-8 text-base font-semibold shadow-md transition-all hover:scale-[1.02]"
@@ -157,7 +183,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
                   </div>
 
                   <p className="mt-4 text-xs text-muted-foreground">
-                    *Pautan jemputan khas untuk peserta yang telah membuat bayaran. Sila sertai menggunakan akaun Telegram anda.
+                    *Pautan jemputan khas untuk peserta yang telah berdaftar. Sila sertai menggunakan akaun Telegram anda.
                   </p>
                 </div>
               ) : (
@@ -208,28 +234,6 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
                   className="enroll-outline w-full sm:w-auto px-6 text-sm font-semibold inline-flex h-11 items-center justify-center rounded-md"
                 >
                   Hubungi Bantuan Telegram
-                </a>
-              </div>
-            </>
-          ) : statusParam === 'success' ? (
-            <>
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                <CheckCircle2 aria-hidden="true" className="size-8 text-primary" />
-              </div>
-              <h1 className="mt-6 text-3xl font-semibold tracking-[-0.05em] text-foreground">
-                Pendaftaran Diterima
-              </h1>
-              <p className="mt-4 text-lg leading-7 text-[color:var(--color-ink-soft)]">
-                Terima kasih atas pendaftaran anda. Pasukan kami akan menyemak permohonan anda dan menghubungi anda tidak lama lagi.
-              </p>
-              <div className="mt-8 border-t border-border pt-8">
-                <a
-                  href="https://t.me/HanishanafiRT"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="enroll-solid mx-auto w-fit px-8 text-sm font-semibold inline-flex h-11 items-center justify-center rounded-sm transition-colors"
-                >
-                  Hubungi RasenganTrader
                 </a>
               </div>
             </>

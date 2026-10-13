@@ -1,7 +1,17 @@
-import { courseOffer } from '@/lib/course'
+import { getCourseBySlug, getClassSessionByOffer } from '@/lib/db/courses'
 import ClassSchedule from '@/components/class-schedule'
 
-export function CourseDetails() {
+export async function CourseDetails() {
+  const [course, session] = await Promise.all([
+    getCourseBySlug('fast-track'),
+    getClassSessionByOffer('fast-track'),
+  ])
+
+  const nextClassDate = session?.display_date || 'November 2026'
+  const modules = course?.modules || []
+  const bonuses = course?.bonuses || []
+  const exclusiveBonus = course?.exclusive_bonus
+
   return (
     <section id="kelas" className="scroll-mt-32 px-5 py-24 sm:px-8 sm:py-32 lg:px-12 bg-background">
       <div className="mx-auto max-w-[90rem]">
@@ -14,7 +24,9 @@ export function CourseDetails() {
           </div>
           <div className="rounded-3xl bg-primary/5 p-8 sm:p-10">
             <p className="font-mono text-[0.66rem] font-bold tracking-[0.1em] text-primary">NEXT CLASS</p>
-            <p className="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold tracking-[-0.05em] text-foreground">{courseOffer.nextClass}</p>
+            <p className="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold tracking-[-0.05em] text-foreground">
+              {nextClassDate}
+            </p>
             <p className="mt-4 max-w-[60ch] text-sm leading-6 text-foreground/80">
               Teknik ini merupakan teknik advanced dan hanya sesuai untuk trader yang telah mempunyai ilmu asas trading.
             </p>
@@ -23,7 +35,7 @@ export function CourseDetails() {
 
         <div className="grid gap-12 py-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(16rem,0.65fr)]">
           <div className="space-y-12">
-            {courseOffer.modules.map((module) => (
+            {modules.map((module) => (
               <article key={module.number} className="grid gap-5 sm:grid-cols-[4.5rem_minmax(0,1fr)] rounded-3xl border border-border/40 bg-card p-8 shadow-sm transition-shadow hover:shadow-md sm:p-10">
                 <p className="font-mono text-2xl font-bold text-primary/80">{module.number}</p>
                 <div>
@@ -44,25 +56,29 @@ export function CourseDetails() {
           <aside className="self-start rounded-3xl border border-border/50 bg-card p-8 shadow-sm sm:p-10">
             <p className="font-mono text-xs font-bold tracking-[0.14em] text-primary">BONUSES</p>
             <ul className="mt-6 space-y-4 text-sm leading-6 text-foreground/80">
-              {courseOffer.bonuses.map((bonus) => (
+              {bonuses.map((bonus) => (
                 <li key={bonus} className="flex gap-3">
                    <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-primary/60" />
                    {bonus}
                 </li>
               ))}
             </ul>
-            <div className="mt-10 rounded-2xl bg-primary/10 p-6">
-              <p className="font-mono text-[0.65rem] font-bold tracking-[0.14em] text-primary">EXCLUSIVE BONUS</p>
-              <h3 className="mt-3 text-xl font-bold tracking-[-0.04em] text-foreground">{courseOffer.exclusiveBonus.title}</h3>
-              <ul className="mt-5 space-y-3 text-sm leading-6 text-foreground/80">
-                {courseOffer.exclusiveBonus.benefits.map((benefit) => (
-                  <li key={benefit} className="flex gap-3">
-                    <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {exclusiveBonus ? (
+              <div className="mt-10 rounded-2xl bg-primary/10 p-6">
+                <p className="font-mono text-[0.65rem] font-bold tracking-[0.14em] text-primary">
+                  {exclusiveBonus.badge_label || 'EXCLUSIVE BONUS'}
+                </p>
+                <h3 className="mt-3 text-xl font-bold tracking-[-0.04em] text-foreground">{exclusiveBonus.title}</h3>
+                <ul className="mt-5 space-y-3 text-sm leading-6 text-foreground/80">
+                  {exclusiveBonus.benefits.map((benefit) => (
+                    <li key={benefit} className="flex gap-3">
+                      <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </aside>
         </div>
 
@@ -76,4 +92,3 @@ export function CourseDetails() {
     </section>
   )
 }
-
