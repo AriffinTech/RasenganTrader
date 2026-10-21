@@ -3,6 +3,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { getPublicClassSessions } from '@/lib/db/courses'
 import { validateDiscountCode } from '@/lib/db/discounts'
 import { registrationOffers, type RegistrationOfferKey } from '@/lib/course'
+import { recordSuccessfulPayment } from '@/lib/payments'
 
 export async function POST(request: Request) {
   try {
@@ -95,11 +96,28 @@ export async function POST(request: Request) {
 
     // 4. Handle 100% Free Discount Code bypass
     if (finalAmount === 0) {
+      const freeBillId = `FREE-${Date.now()}`
+      await recordSuccessfulPayment({
+        billId: freeBillId,
+        paidAmountCents: 0,
+        customerName: name,
+        customerEmail: email,
+        customerPhone: phone,
+        reference1: telegram,
+        reference2: offer,
+        discountCode: appliedDiscountCode,
+        description,
+        paidAt: new Date().toISOString(),
+        rawMetadata: { offer, free_pass: true, discount_code: appliedDiscountCode },
+      })
+
       return NextResponse.json({
         url: `${appUrl}/terima-kasih?status=success&offer=${encodeURIComponent(
           offer
-        )}&name=${encodeURIComponent(name)}&telegram=${encodeURIComponent(telegram)}`,
-        id: `FREE-${Date.now()}`,
+        )}&name=${encodeURIComponent(name)}&telegram=${encodeURIComponent(telegram)}${
+          appliedDiscountCode ? `&code=${encodeURIComponent(appliedDiscountCode)}` : ''
+        }`,
+        id: freeBillId,
       })
     }
 
@@ -115,6 +133,11 @@ export async function POST(request: Request) {
 
     const authHeader = `Basic ${Buffer.from(`${secretKey}:`).toString('base64')}`
 
+    const redirectUrl = `${appUrl}/terima-kasih?offer=${encodeURIComponent(offer)}${
+      appliedDiscountCode ? `&code=${encodeURIComponent(appliedDiscountCode)}` : ''
+    }`
+    const reference2Value = appliedDiscountCode ? `${offer}|${appliedDiscountCode}` : offer
+
     const billData = {
       collection_id: collectionId,
       description: description,
@@ -123,11 +146,11 @@ export async function POST(request: Request) {
       mobile: phone,
       amount: finalAmount,
       callback_url: `${appUrl}/api/webhook/billplz`,
-      redirect_url: `${appUrl}/terima-kasih`,
+      redirect_url: redirectUrl,
       reference_1_label: 'Telegram',
       reference_1: telegram,
       reference_2_label: 'Offer',
-      reference_2: offer,
+      reference_2: reference2Value,
     }
 
     const response = await fetch(`${billplzUrl}/bills`, {
@@ -146,6 +169,32 @@ export async function POST(request: Request) {
     }
 
     const data = await response.json()
+
+    // Record pending transaction in Supabase with discount code metadata
+    try {
+      const { createAdminClient } = await import('@/lib/supabase/admin')
+      const adminSupabase = createAdminClient()
+      await adminSupabase.from('payment_transactions').insert({
+        bill_id: data.id,
+        status: 'pending',
+        amount_cents: finalAmount,
+        customer_name: name,
+        customer_email: email,
+        customer_phone: phone,
+        reference_1: telegram,
+        reference_2: reference2Value,
+        metadata: {
+          offer,
+          discount_code: appliedDiscountCode,
+          billplz_url: data.url,
+          description,
+        },
+        processed_at: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+      })
+    } catch (txErr) {
+      console.warn('Failed to insert pending payment_transaction:', txErr)
+    }
 
     return NextResponse.json({ url: data.url, id: data.id })
   } catch (error) {

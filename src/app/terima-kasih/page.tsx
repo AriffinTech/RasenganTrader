@@ -16,6 +16,7 @@ import {
   verifyBillplzPayment,
   TELEGRAM_KELAS_ASAS_INVITE_LINK,
 } from '@/lib/billplz'
+import { recordSuccessfulPayment } from '@/lib/payments'
 import { registrationOffers, saham101Offer } from '@/lib/course'
 import { getClassSessionByOffer } from '@/lib/db/courses'
 
@@ -49,6 +50,11 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
     getParam(resolvedParams, 'x_signature')
   const statusParam = getParam(resolvedParams, 'status')
   const queryOffer = getParam(resolvedParams, 'offer')
+  const queryCode = getParam(resolvedParams, 'code')
+  const queryName = getParam(resolvedParams, 'name')
+  const queryEmail = getParam(resolvedParams, 'email')
+  const queryPhone = getParam(resolvedParams, 'phone')
+  const queryTelegram = getParam(resolvedParams, 'telegram')
 
   // Verify payment if billId is available
   const verification = billId
@@ -72,8 +78,39 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
     paidParam === 'false'
   )
 
-  // Identify offer
-  const detectedOfferKey = verification?.offer || queryOffer || 'saham-101'
+  // Identify offer and discount code
+  const rawOffer = verification?.offer || queryOffer || 'saham-101'
+  const offerParts = rawOffer.split('|')
+  const detectedOfferKey = offerParts[0]
+  const extractedDiscountCode = queryCode || (offerParts.length > 1 ? offerParts[1] : undefined)
+
+  // Reconcile and record payment + increment coupon times_used if confirmed paid
+  if (isPaymentSuccessful && billId && !isFreeSuccess) {
+    try {
+      await recordSuccessfulPayment({
+        billId,
+        paidAmountCents: verification?.amount ?? 0,
+        customerName: verification?.name || queryName,
+        customerEmail: verification?.email || queryEmail,
+        customerPhone: queryPhone,
+        reference1: verification?.telegram || queryTelegram,
+        reference2: rawOffer,
+        discountCode: extractedDiscountCode,
+        paidAt: verification?.paidAt || paidAtParam,
+        rawMetadata: {
+          source: 'redirect_terima_kasih',
+          redirect_params: {
+            billId,
+            paid: paidParam,
+            paidAt: paidAtParam,
+          },
+        },
+      })
+    } catch (err) {
+      console.error('Failed to record payment in terima-kasih page:', err)
+    }
+  }
+
   const isCoaching = detectedOfferKey === 'personal-coaching' || detectedOfferKey.startsWith('trading-clinic')
 
   // Fetch dynamic session and effective telegram link

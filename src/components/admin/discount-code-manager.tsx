@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Plus, Tag, Trash2, CheckCircle2, XCircle, AlertCircle, Loader2 } from 'lucide-react'
+import { Plus, Tag, Trash2, Pencil, CheckCircle2, XCircle, AlertCircle, Loader2 } from 'lucide-react'
 import { saveDiscountCode, toggleDiscountStatus, deleteDiscountCode } from '@/actions/discounts'
 import type { DiscountCode, Course } from '@/types/database'
 
@@ -14,11 +14,26 @@ type Props = {
 export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
   const router = useRouter()
   const [showModal, setShowModal] = useState(false)
+  const [editingDiscount, setEditingDiscount] = useState<DiscountCode | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [discountType, setDiscountType] = useState<'fixed' | 'percentage'>('fixed')
 
-  async function handleCreateDiscount(e: React.FormEvent<HTMLFormElement>) {
+  function openCreateModal() {
+    setEditingDiscount(null)
+    setDiscountType('fixed')
+    setError(null)
+    setShowModal(true)
+  }
+
+  function openEditModal(discount: DiscountCode) {
+    setEditingDiscount(discount)
+    setDiscountType(discount.discount_type)
+    setError(null)
+    setShowModal(true)
+  }
+
+  async function handleSaveDiscount(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError(null)
@@ -31,6 +46,7 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
       setError(result.error)
     } else {
       setShowModal(false)
+      setEditingDiscount(null)
       router.refresh()
     }
   }
@@ -49,7 +65,7 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
 
         <button
           type="button"
-          onClick={() => setShowModal(true)}
+          onClick={openCreateModal}
           className="enroll-solid inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-xs font-semibold shadow-sm w-fit"
         >
           <Plus className="size-4" />
@@ -57,7 +73,7 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
         </button>
       </div>
 
-      {/* Creation Modal */}
+      {/* Creation / Edit Modal */}
       {showModal ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
           <div className="w-full max-w-lg rounded-2xl border border-border bg-secondary p-6 sm:p-8 shadow-2xl space-y-6">
@@ -65,12 +81,15 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
               <div className="flex items-center gap-2">
                 <Tag className="size-4 text-primary" />
                 <h2 className="font-semibold text-base text-foreground">
-                  Cipta Kod Diskaun Baru
+                  {editingDiscount ? `Kemaskini Kod: ${editingDiscount.code}` : 'Cipta Kod Diskaun Baru'}
                 </h2>
               </div>
               <button
                 type="button"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false)
+                  setEditingDiscount(null)
+                }}
                 className="text-muted-foreground hover:text-foreground text-sm font-semibold"
               >
                 ✕
@@ -83,7 +102,11 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
               </div>
             ) : null}
 
-            <form onSubmit={handleCreateDiscount} className="space-y-4">
+            <form onSubmit={handleSaveDiscount} className="space-y-4">
+              {editingDiscount ? (
+                <input type="hidden" name="id" value={editingDiscount.id} />
+              ) : null}
+
               <div>
                 <label className="block text-xs font-semibold text-foreground">
                   Kod Diskaun (Auto Huruf Besar) <span className="text-primary">*</span>
@@ -91,6 +114,7 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
                 <input
                   required
                   name="code"
+                  defaultValue={editingDiscount?.code || ''}
                   placeholder="Contoh: FAST50, RAYA15"
                   className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm uppercase font-mono text-foreground outline-none focus:border-primary"
                 />
@@ -122,6 +146,13 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
                     step="1"
                     min="1"
                     name="discount_value"
+                    defaultValue={
+                      editingDiscount
+                        ? editingDiscount.discount_type === 'fixed'
+                          ? Math.round(editingDiscount.discount_value / 100)
+                          : editingDiscount.discount_value
+                        : ''
+                    }
                     placeholder={discountType === 'fixed' ? 'Contoh: 50' : 'Contoh: 15'}
                     className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
                   />
@@ -134,6 +165,7 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
                 </label>
                 <select
                   name="course_id"
+                  defaultValue={editingDiscount?.course_id || ''}
                   className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
                 >
                   <option value="">Sah Untuk Semua Kursus &amp; Sesi</option>
@@ -153,6 +185,7 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
                   <input
                     type="date"
                     name="valid_until"
+                    defaultValue={editingDiscount?.valid_until ? editingDiscount.valid_until.slice(0, 10) : ''}
                     className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-xs text-foreground outline-none focus:border-primary"
                   />
                 </div>
@@ -165,10 +198,29 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
                     type="number"
                     min="1"
                     name="max_uses"
+                    defaultValue={editingDiscount?.max_uses ?? ''}
                     placeholder="Contoh: 50 (Kosong = Tiada Had)"
                     className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-xs text-foreground outline-none focus:border-primary"
                   />
                 </div>
+              </div>
+
+              {/* Editable times_used counter */}
+              <div className="rounded-lg border border-border bg-background/50 p-3">
+                <label className="block text-xs font-semibold text-foreground">
+                  Jumlah Penggunaan Semasa (times_used)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  name="times_used"
+                  defaultValue={editingDiscount?.times_used ?? 0}
+                  placeholder="0"
+                  className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-xs text-foreground font-mono outline-none focus:border-primary"
+                />
+                <p className="mt-1 text-[10px] text-muted-foreground">
+                  Nombor ini auto-bertambah setiap kali bayaran berjaya dibuat. Anda boleh laraskan nombor ini secara manual sekiranya perlu.
+                </p>
               </div>
 
               <div className="flex items-center gap-2 pt-2">
@@ -176,18 +228,21 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
                   type="checkbox"
                   name="is_active"
                   id="is_active"
-                  defaultChecked
+                  defaultChecked={editingDiscount ? editingDiscount.is_active : true}
                   className="rounded border-border text-primary focus:ring-primary"
                 />
                 <label htmlFor="is_active" className="text-xs font-medium text-foreground">
-                  Aktifkan serta-merta
+                  Aktifkan kod ini
                 </label>
               </div>
 
               <div className="flex justify-end gap-2 pt-4 border-t border-border">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => {
+                    setShowModal(false)
+                    setEditingDiscount(null)
+                  }}
                   className="rounded border border-border px-4 py-2 text-xs font-semibold text-foreground hover:bg-secondary"
                 >
                   Batal
@@ -198,7 +253,7 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
                   className="enroll-solid rounded px-5 py-2 text-xs font-semibold shadow-sm disabled:opacity-50 inline-flex items-center gap-2"
                 >
                   {loading ? <Loader2 className="size-3.5 animate-spin" /> : null}
-                  Simpan Kod Diskaun
+                  {editingDiscount ? 'Simpan Perubahan' : 'Simpan Kod Diskaun'}
                 </button>
               </div>
             </form>
@@ -273,6 +328,14 @@ export function DiscountCodeManager({ initialDiscounts, courses }: Props) {
                     </td>
                     <td className="py-3 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => openEditModal(discount)}
+                          className="rounded border border-border p-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                          title="Kemaskini Kod Diskaun"
+                        >
+                          <Pencil className="size-3.5" />
+                        </button>
                         <button
                           type="button"
                           onClick={async () => {

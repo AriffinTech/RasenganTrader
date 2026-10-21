@@ -27,6 +27,11 @@ export async function saveDiscountCode(formData: FormData) {
     const valid_until = (formData.get('valid_until') as string) || null
     const max_uses_raw = (formData.get('max_uses') as string) || null
     const max_uses = max_uses_raw ? parseInt(max_uses_raw, 10) : null
+    const times_used_raw = (formData.get('times_used') as string) || null
+    const times_used =
+      times_used_raw !== null && times_used_raw !== ''
+        ? Math.max(0, parseInt(times_used_raw, 10))
+        : undefined
     const is_active = formData.get('is_active') === 'on' || formData.get('is_active') === 'true'
 
     if (!code) {
@@ -37,7 +42,7 @@ export async function saveDiscountCode(formData: FormData) {
       return { error: 'Nilai diskaun mestilah lebih daripada 0.' }
     }
 
-    const payload = {
+    const payload: Record<string, any> = {
       code,
       discount_type,
       discount_value,
@@ -49,13 +54,17 @@ export async function saveDiscountCode(formData: FormData) {
       updated_at: new Date().toISOString(),
     }
 
+    if (times_used !== undefined && !isNaN(times_used)) {
+      payload.times_used = times_used
+    }
+
     if (id) {
       const { error } = await supabase.from('discount_codes').update(payload).eq('id', id)
       if (error) throw error
     } else {
       const { error } = await supabase.from('discount_codes').insert({
         ...payload,
-        times_used: 0,
+        times_used: times_used ?? 0,
         created_at: new Date().toISOString(),
       })
       if (error) throw error
