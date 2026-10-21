@@ -259,7 +259,14 @@ export async function getPublicClassSessions(): Promise<ClassSession[]> {
 
 export async function getAllClassSessions(): Promise<ClassSession[]> {
   try {
-    const supabase = await createClient()
+    let supabase: any
+    try {
+      const { createAdminClient } = await import('@/lib/supabase/admin')
+      supabase = createAdminClient()
+    } catch {
+      supabase = await createClient()
+    }
+
     const { data, error } = await supabase
       .from('class_sessions')
       .select('*, course:courses(*)')
@@ -276,7 +283,14 @@ export async function getAllClassSessions(): Promise<ClassSession[]> {
 
 export async function getClassSessionById(id: string): Promise<ClassSession | null> {
   try {
-    const supabase = await createClient()
+    let supabase: any
+    try {
+      const { createAdminClient } = await import('@/lib/supabase/admin')
+      supabase = createAdminClient()
+    } catch {
+      supabase = await createClient()
+    }
+
     const { data, error } = await supabase
       .from('class_sessions')
       .select('*, course:courses(*)')
