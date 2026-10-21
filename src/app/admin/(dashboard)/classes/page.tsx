@@ -3,6 +3,7 @@ import { Plus, Edit3, ExternalLink, Calendar, Clock, DollarSign, Archive } from 
 import { getAllClassSessions } from '@/lib/db/courses'
 import { updateClassStatus } from '@/actions/classes'
 import { DeleteClassButton } from '@/components/admin/delete-class-button'
+import { ReorderClassButtons } from '@/components/admin/reorder-class-buttons'
 import type { ClassStatus } from '@/types/database'
 
 function formatPrice(cents: number) {
@@ -49,7 +50,7 @@ export default async function AdminClassesPage() {
       </div>
 
       <div className="grid gap-4">
-        {sessions.map((cls) => {
+        {sessions.map((cls, index) => {
           const effectiveTg = cls.telegram_link_override || cls.course?.default_telegram_link || 'Tiada pautan'
           const isArchived = cls.status === 'archived'
 
@@ -65,6 +66,9 @@ export default async function AdminClassesPage() {
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="space-y-2 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
+                    <span className="flex h-6 min-w-6 items-center justify-center rounded bg-secondary px-1.5 text-xs font-mono font-bold text-foreground border border-border/80">
+                      #{index + 1}
+                    </span>
                     <span className="font-semibold text-base text-foreground">{cls.session_title}</span>
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider ${
@@ -134,6 +138,8 @@ export default async function AdminClassesPage() {
 
                 {/* Status Changer & Edit Action Buttons */}
                 <div className="flex flex-wrap items-center gap-2 pt-2 lg:pt-0">
+                  <ReorderClassButtons id={cls.id} index={index} total={sessions.length} />
+
                   <form
                     action={async (formData: FormData) => {
                       'use server'

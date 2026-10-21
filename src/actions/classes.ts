@@ -29,8 +29,10 @@ export async function saveClassSession(formData: FormData) {
     const custom_inclusions = custom_inclusions_raw
       ? custom_inclusions_raw.split('\n').map((s) => s.trim()).filter(Boolean)
       : null
+    const sort_order_raw = formData.get('sort_order') as string | null
+    const sort_order = sort_order_raw ? parseInt(sort_order_raw, 10) : undefined
 
-    const sessionPayload = {
+    const sessionPayload: Record<string, any> = {
       course_id,
       session_title,
       display_date,
@@ -42,6 +44,7 @@ export async function saveClassSession(formData: FormData) {
       telegram_link_override: telegram_link_override ? telegram_link_override.trim() : null,
       poster_url_override: poster_url_override ? poster_url_override.trim() : null,
       custom_inclusions,
+      ...(sort_order !== undefined && !isNaN(sort_order) ? { sort_order } : {}),
       updated_at: new Date().toISOString(),
     }
 
@@ -118,5 +121,58 @@ export async function deleteClassSession(id: string) {
     return { success: true }
   } catch (err: any) {
     return { error: err.message }
+  }
+}
+
+export async function moveClassSession(id: string, direction: 'up' | 'down') {
+  try {
+    // Enforce verified administrator session
+    const adminCheck = await verifyAdminSession()
+    if (!adminCheck.authorized || !adminCheck.supabase) {
+      return { error: adminCheck.error || 'Akses tidak dibenarkan.' }
+    }
+    const supabase = adminCheck.supabase
+
+    // Retrieve all class sessions ordered by sort_order
+    const { data: sessions, error } = await supabase
+      .from('class_sessions')
+      .select('id, sort_order')
+      .order('sort_order', { ascending: true })
+
+    if (error || !sessions) throw error
+
+    const currentIndex = (sessions as Array<{ id: string; sort_order: number }>).findIndex(
+      (s) => s.id === id
+    )
+    if (currentIndex === -1) {
+      return { error: 'Sesi kelas tidak ditemui.' }
+    }
+
+    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1
+    if (targetIndex < 0 || targetIndex >= sessions.length) {
+      return { success: true } // Already at boundary
+    }
+
+    const currentSession = sessions[currentIndex]
+    const targetSession = sessions[targetIndex]
+
+    // Swap sort_order values
+    const currentSort = targetIndex + 1
+    const targetSort = currentIndex + 1
+
+    await Promise.all([
+      supabase.from('class_sessions').update({ sort_order: currentSort }).eq('id', currentSession.id),
+      supabase.from('class_sessions').update({ sort_order: targetSort }).eq('id', targetSession.id),
+    ])
+
+    revalidatePath('/')
+    revalidatePath('/register')
+    revalidatePath('/admin')
+    revalidatePath('/admin/classes')
+
+    return { success: true }
+  } catch (err: any) {
+    console.error('moveClassSession error:', err)
+    return { error: err.message || 'Gagal mengubah susunan kelas.' }
   }
 }

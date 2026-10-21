@@ -188,6 +188,24 @@ export function ClassSessionForm({ courses, session }: ClassSessionFormProps) {
               <option value="archived">Archived (Sembunyi dari Laman Awam)</option>
             </select>
           </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-foreground">
+              No. Urutan Susunan (Sort Order)
+            </label>
+            <input
+              type="number"
+              name="sort_order"
+              defaultValue={session?.sort_order ?? 1}
+              min="1"
+              max="99"
+              placeholder="Contoh: 1 (paling atas)"
+              className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary"
+            />
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              Nombor 1 akan dipaparkan paling awal/atas di laman utama.
+            </p>
+          </div>
         </div>
 
         {/* Concrete timestamps for 30-day lifecycle automation */}
