@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { Plus, Edit3, ExternalLink, Calendar, Clock, DollarSign } from 'lucide-react'
-import { getPublicClassSessions } from '@/lib/db/courses'
+import { Plus, Edit3, ExternalLink, Calendar, Clock, DollarSign, Archive } from 'lucide-react'
+import { getAllClassSessions } from '@/lib/db/courses'
 import { updateClassStatus } from '@/actions/classes'
 import { DeleteClassButton } from '@/components/admin/delete-class-button'
 import type { ClassStatus } from '@/types/database'
@@ -10,7 +10,11 @@ function formatPrice(cents: number) {
 }
 
 export default async function AdminClassesPage() {
-  const sessions = await getPublicClassSessions()
+  const sessions = await getAllClassSessions()
+
+  const totalCount = sessions.length
+  const activeCount = sessions.filter((s) => s.status !== 'archived' && s.status !== 'closed').length
+  const archivedCount = sessions.filter((s) => s.status === 'archived').length
 
   return (
     <div className="space-y-6">
@@ -22,6 +26,17 @@ export default async function AdminClassesPage() {
           <p className="mt-1 text-sm text-muted-foreground">
             Cipta, kemaskini intake, ubah pautan Telegram, dan kawal status pendaftaran.
           </p>
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+            <span className="font-medium text-foreground">Jumlah: {totalCount} sesi</span>
+            <span>·</span>
+            <span className="text-primary font-medium">Aktif: {activeCount}</span>
+            {archivedCount > 0 ? (
+              <>
+                <span>·</span>
+                <span className="text-zinc-400 font-medium">Diarkibkan: {archivedCount}</span>
+              </>
+            ) : null}
+          </div>
         </div>
 
         <Link
@@ -36,10 +51,16 @@ export default async function AdminClassesPage() {
       <div className="grid gap-4">
         {sessions.map((cls) => {
           const effectiveTg = cls.telegram_link_override || cls.course?.default_telegram_link || 'Tiada pautan'
+          const isArchived = cls.status === 'archived'
+
           return (
             <div
               key={cls.id}
-              className="rounded-xl border border-border bg-secondary/20 p-5 sm:p-6 transition-colors hover:border-primary/40"
+              className={`rounded-xl border p-5 sm:p-6 transition-colors ${
+                isArchived
+                  ? 'border-zinc-800 bg-secondary/10 opacity-80 hover:border-zinc-700'
+                  : 'border-border bg-secondary/20 hover:border-primary/40'
+              }`}
             >
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="space-y-2 flex-1">
@@ -53,11 +74,22 @@ export default async function AdminClassesPage() {
                           ? 'bg-amber-500/10 text-amber-500'
                           : cls.status === 'upcoming'
                           ? 'bg-blue-500/10 text-blue-400'
+                          : cls.status === 'archived'
+                          ? 'bg-zinc-800 text-zinc-300 border border-zinc-700'
                           : 'bg-muted text-muted-foreground'
                       }`}
                     >
-                      {cls.status === 'completed_registering' ? 'Sesi Rakaman' : cls.status}
+                      {cls.status === 'completed_registering'
+                        ? 'Sesi Rakaman'
+                        : cls.status === 'archived'
+                        ? 'Diarkibkan'
+                        : cls.status}
                     </span>
+                    {isArchived ? (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-zinc-800/80 px-2 py-0.5 text-[10px] text-zinc-400">
+                        <Archive className="size-3" /> Tersembunyi dari Laman Awam
+                      </span>
+                    ) : null}
                     {cls.is_featured ? (
                       <span className="rounded-full bg-primary/20 px-2 py-0.5 text-[10px] font-semibold text-primary">
                         Featured

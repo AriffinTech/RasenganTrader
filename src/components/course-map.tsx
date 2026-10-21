@@ -7,7 +7,6 @@ const learningNodes = [
 
 const markets = [
   ['MY', 'Bursa Malaysia', 'Saham'],
-  ['US', 'US Stocks', 'Saham'],
   ['MY', 'FCPO', 'Futures'],
   ['CL', 'Crude Oil', 'Futures'],
 ]

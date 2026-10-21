@@ -2,7 +2,6 @@ import { ArrowUpRight } from 'lucide-react'
 
 const markets = [
   { code: 'MY', name: 'Bursa Malaysia', type: 'Saham' },
-  { code: 'US', name: 'US Stocks', type: 'Saham' },
   { code: 'FC', name: 'FCPO', type: 'Futures' },
   { code: 'CL', name: 'Crude Oil', type: 'Futures' },
 ]

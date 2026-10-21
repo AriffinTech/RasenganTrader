@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { courseOffer, saham101Offer, personalCoachingOffer, tradingClinicOnlineOffer, tradingClinicF2FOffer } from '@/lib/course'
-import type { Course, ClassSession, ClassStatus } from '@/types/database'
+import type { Course, ClassSession } from '@/types/database'
 
 export const fallbackCourses: Course[] = [
   {
@@ -246,6 +246,23 @@ export async function getPublicClassSessions(): Promise<ClassSession[]> {
       .from('class_sessions')
       .select('*, course:courses(*)')
       .neq('status', 'archived')
+      .order('sort_order', { ascending: true })
+
+    if (error || !data || data.length === 0) {
+      return fallbackSessions
+    }
+    return data as ClassSession[]
+  } catch {
+    return fallbackSessions
+  }
+}
+
+export async function getAllClassSessions(): Promise<ClassSession[]> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('class_sessions')
+      .select('*, course:courses(*)')
       .order('sort_order', { ascending: true })
 
     if (error || !data || data.length === 0) {

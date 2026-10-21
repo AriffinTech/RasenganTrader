@@ -82,8 +82,8 @@
     right: 3%;
     bottom: 7%;
     display: grid;
-    width: min(31rem, 54%);
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: min(25rem, 50%);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     border-top: 1px solid var(--color-rule);
     border-left: 1px solid var(--color-rule);
     background: var(--color-paper);
@@ -96,6 +96,6 @@
     .map-canvas::after, .map-lines { display: none; }
     .map-node, .map-node--1, .map-node--2, .map-node--3, .map-node--4 { position: relative; top: auto; right: auto; bottom: auto; left: auto; width: 100%; }
     .map-node:not(.map-node--4)::after { content: "\2193"; position: absolute; bottom: -1.55rem; left: 50%; color: var(--color-accent); transform: translateX(-50%); }
-    .market-cluster { position: relative; right: auto; bottom: auto; width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: var(--space-sm); }
+    .market-cluster { position: relative; right: auto; bottom: auto; width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: var(--space-sm); }
   }
 }

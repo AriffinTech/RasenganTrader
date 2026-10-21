@@ -21,7 +21,7 @@ export function Header() {
           </span>
         </Link>
 
-        <EnrollmentLink className="shrink-0 px-3 text-xs font-semibold sm:px-5 sm:text-sm">
+        <EnrollmentLink offer="fast-track" className="shrink-0 px-3 text-xs font-semibold sm:px-5 sm:text-sm">
           Daftar Sekarang
         </EnrollmentLink>
       </nav>

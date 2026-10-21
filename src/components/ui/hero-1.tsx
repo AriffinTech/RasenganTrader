@@ -28,7 +28,7 @@ export function HeroSection() {
           Pembelajaran Teknik True Smart Money Concept (SMC) untuk trader yang mahu membaca pergerakan harga dengan lebih jelas dan menguasai Price Action.
         </p>
         <div className="mt-7 flex w-full max-w-xl flex-col items-center gap-5 sm:mt-9 sm:flex-row sm:justify-between">
-          <EnrollmentLink className="px-6 text-sm font-semibold sm:px-7">
+          <EnrollmentLink offer="fast-track" className="px-6 text-sm font-semibold sm:px-7">
             Daftar Sekarang
           </EnrollmentLink>
           <a

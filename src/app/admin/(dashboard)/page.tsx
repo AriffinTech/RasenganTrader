@@ -9,7 +9,7 @@ import {
   Clock,
   ArrowRight,
 } from 'lucide-react'
-import { getCourses, getPublicClassSessions } from '@/lib/db/courses'
+import { getCourses, getAllClassSessions } from '@/lib/db/courses'
 import { updateClassStatus } from '@/actions/classes'
 import type { ClassStatus } from '@/types/database'
 
@@ -20,7 +20,7 @@ function formatPrice(cents: number) {
 export default async function AdminDashboardOverview() {
   const [courses, sessions] = await Promise.all([
     getCourses(),
-    getPublicClassSessions(),
+    getAllClassSessions(),
   ])
 
   const now = new Date()
@@ -37,6 +37,8 @@ export default async function AdminDashboardOverview() {
 
   const openCount = sessions.filter((s) => s.status === 'open' || s.status === 'completed_registering').length
   const upcomingCount = sessions.filter((s) => s.status === 'upcoming').length
+  const archivedCount = sessions.filter((s) => s.status === 'archived').length
+  const activeCount = sessions.filter((s) => s.status !== 'archived').length
 
   return (
     <div className="space-y-8">
@@ -172,7 +174,7 @@ export default async function AdminDashboardOverview() {
             {sessions.length}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            Dipaparkan di laman utama
+            {activeCount} aktif {archivedCount > 0 ? `· ${archivedCount} diarkibkan` : ''}
           </p>
         </div>
       </div>
@@ -212,10 +214,16 @@ export default async function AdminDashboardOverview() {
                           ? 'bg-amber-500/10 text-amber-500'
                           : cls.status === 'upcoming'
                           ? 'bg-blue-500/10 text-blue-400'
+                          : cls.status === 'archived'
+                          ? 'bg-zinc-800 text-zinc-300 border border-zinc-700'
                           : 'bg-muted text-muted-foreground'
                       }`}
                     >
-                      {cls.status === 'completed_registering' ? 'Sesi Rakaman' : cls.status}
+                      {cls.status === 'completed_registering'
+                        ? 'Sesi Rakaman'
+                        : cls.status === 'archived'
+                        ? 'Diarkibkan'
+                        : cls.status}
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground">

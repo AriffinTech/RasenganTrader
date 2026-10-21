@@ -153,7 +153,7 @@ const Header = () => {
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-2 sm:space-y-0">
                 <ModeToggle />
-                <EnrollmentLink className={cn("px-3 sm:px-5 text-xs sm:text-sm", isScrolled && "lg:hidden")}>
+                <EnrollmentLink offer="fast-track" className={cn("px-3 sm:px-5 text-xs sm:text-sm", isScrolled && "lg:hidden")}>
                   Daftar Sekarang
                 </EnrollmentLink>
               </div>

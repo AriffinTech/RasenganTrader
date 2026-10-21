@@ -19,7 +19,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
 
   const requestedOffer = (await searchParams).offer
   const offerValue = Array.isArray(requestedOffer) ? requestedOffer[0] : requestedOffer
-  const selectedOffer = isRegistrationOffer(offerValue) ? offerValue : 'saham-101'
+  const selectedOffer = isRegistrationOffer(offerValue) ? offerValue : 'fast-track'
   const fallbackOffer = registrationOffers[selectedOffer]
 
   const targetCourse = courses.find((c) => c.slug === selectedOffer)
