@@ -2,7 +2,8 @@ import { ArrowUpRight } from 'lucide-react'
 
 const platforms = [
   { 
-    name: 'M+ Global', 
+    name: 'M+ Global',
+    tag: 'Saham Bursa & US',
     link: 'https://m.global.mplusonline.com/kh/status/entry/transit?lang=en_US&_scnl=MR389064',
     features: [
       'Trade saham Bursa & US',
@@ -10,7 +11,8 @@ const platforms = [
     ]
   },
   { 
-    name: 'moomoo', 
+    name: 'moomoo',
+    tag: 'Saham Bursa & US',
     link: 'https://start.moomoo.com/0iuzT1',
     features: [
       'Trade saham Bursa & US',
@@ -18,7 +20,8 @@ const platforms = [
     ]
   },
   { 
-    name: 'Phillip Capital', 
+    name: 'Phillip Capital',
+    tag: 'Futures FCPO & CL',
     link: 'https://oao.phillip.com.my/?aetag=MAU',
     features: [
       'Trade Futures seperti FCPO, CL & ZL',
@@ -29,11 +32,11 @@ const platforms = [
 
 export function AccountOpening() {
   return (
-    <section id="buka-akaun" className="scroll-mt-32 px-5 py-16 sm:px-8 sm:py-20 md:py-28 lg:px-12">
+    <section id="buka-akaun" className="px-5 py-16 sm:px-8 sm:py-20 md:py-28 lg:px-12">
       <div className="mx-auto max-w-[90rem]">
         <div className="grid gap-8 border-b border-border pb-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:items-end">
           <div>
-            <p className="font-mono text-xs font-medium tracking-[0.16em] text-primary">ADDITIONAL SERVICE</p>
+            <p className="eyebrow">Additional service</p>
             <h2 className="mt-4 max-w-[11ch] text-[clamp(2rem,4vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-foreground">
               Buka Akaun.
             </h2>
@@ -42,15 +45,16 @@ export function AccountOpening() {
             Dapatkan bantuan untuk membuka akaun trading dengan platform pilihan anda.
           </p>
         </div>
-        <div className="mt-10 grid divide-y divide-border border-y border-border md:grid-cols-3 md:divide-x md:divide-y-0">
-          {platforms.map(({ name, link, features }) => (
-            <article key={name} className="flex min-h-64 flex-col justify-between px-0 py-7 md:px-7 lg:px-9">
+        <div className="mt-10 grid gap-4 md:grid-cols-3 lg:gap-6">
+          {platforms.map(({ name, tag, link, features }) => (
+            <article key={name} className="surface-card flex min-h-64 flex-col justify-between p-6 transition-colors hover:border-primary/50 sm:p-8">
               <div>
-                <h3 className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-[-0.06em] text-foreground">{name}</h3>
+                <p className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-primary">{tag}</p>
+                <h3 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-semibold tracking-[-0.06em] text-foreground">{name}</h3>
                 <ul className="mt-5 space-y-3">
                   {features.map((feature, i) => (
-                    <li key={i} className="flex text-sm leading-relaxed text-muted-foreground">
-                      <span className="mr-3 text-primary">•</span>
+                    <li key={i} className="flex text-sm leading-relaxed text-[color:var(--color-ink-soft)]">
+                      <span aria-hidden="true" className="mr-3 mt-[0.55rem] size-1.5 shrink-0 rounded-full bg-primary" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -69,7 +73,7 @@ export function AccountOpening() {
           ))}
         </div>
         
-        <div id="contact" className="scroll-mt-32 mt-12 flex flex-col items-center justify-center rounded-xl border border-border bg-secondary/10 px-6 py-10 text-center sm:px-10">
+        <div id="contact" className="surface-card mt-12 flex flex-col items-center justify-center px-6 py-10 text-center sm:px-10">
           <h3 className="text-xl font-semibold text-foreground">Perlukan Bantuan Tambahan?</h3>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
             Jika anda nak bertanya tentang kelas / perlukan bantuan semasa buka akaun, hubungi saya di telegram.
@@ -90,20 +94,17 @@ export function AccountOpening() {
         </p>
 
         <div className="mt-20 flex justify-center pb-8">
-          <div className="relative max-w-2xl rounded-2xl border border-primary/20 bg-primary/5 px-8 py-10 text-center sm:px-12">
-            <span className="absolute left-4 top-4 font-[family-name:var(--font-display)] text-6xl leading-none text-primary/40">
+          <figure className="surface-tint max-w-2xl px-8 py-10 text-center sm:px-12">
+            <span aria-hidden="true" className="block font-[family-name:var(--font-display)] text-5xl leading-none text-primary/50">
               &ldquo;
             </span>
-            <p className="relative z-10 text-lg font-medium italic leading-relaxed text-foreground sm:text-xl">
-              If you trade SMC without Inducement &amp; Liquidity, you are using the wrong concepts
-            </p>
-            <p className="relative z-10 mt-6 font-mono text-sm font-semibold tracking-[0.08em] text-primary">
-              - RasenganTrader -
-            </p>
-            <span className="absolute bottom-[-1rem] right-4 font-[family-name:var(--font-display)] text-6xl leading-none text-primary/40">
-              &rdquo;
-            </span>
-          </div>
+            <blockquote className="mt-2 text-lg font-medium italic leading-relaxed text-foreground sm:text-xl">
+              If you trade SMC without Inducement &amp; Liquidity, you are using the wrong concepts.
+            </blockquote>
+            <figcaption className="mt-6 font-mono text-xs font-medium tracking-[0.12em] text-primary">
+              — RASENGANTRADER
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>

@@ -10,7 +10,7 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 
-import { Header } from '@/components/ui/header-1'
+import { Header } from '@/components/site-header'
 import { Footer } from '@/components/footer'
 import {
   verifyBillplzPayment,
@@ -126,14 +126,14 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="grow flex items-center justify-center px-5 py-14 sm:px-8 md:py-20 lg:px-12">
-        <div className="mx-auto w-full max-w-2xl border border-border bg-secondary/30 p-8 sm:p-12 text-center rounded-2xl shadow-sm">
+        <div className="surface-card mx-auto w-full max-w-2xl p-7 text-center sm:p-12">
           {isPaymentSuccessful ? (
             <>
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <CheckCircle2 aria-hidden="true" className="size-9 text-primary" />
               </div>
 
-              <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              <div className="status-badge status-badge--open mt-4">
                 <ShieldCheck aria-hidden="true" className="size-4" />
                 {isFreeSuccess ? 'PENDAFTARAN DISAHKAN' : 'PEMBAYARAN DISAHKAN'}
               </div>
@@ -147,9 +147,10 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
               </p>
 
               {/* Offer Details Box */}
-              <div className="mt-8 rounded-xl border border-border bg-background/60 p-6 text-left">
-                <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
-                  BUTIRAN KELAS
+              <div className="mt-8 rounded-[var(--radius-md)] border border-border bg-background p-6 text-left">
+                <p className="flex items-center font-mono text-xs uppercase tracking-[0.14em] text-primary">
+                  <span aria-hidden="true" className="mr-2 inline-flex size-5 items-center justify-center rounded-full border border-primary/40 font-mono text-[0.65rem] text-primary">1</span>
+                  Sahkan butiran kelas
                 </p>
                 <h2 className="mt-2 text-xl font-semibold text-foreground">
                   {offerTitle}
@@ -195,9 +196,10 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
 
               {/* Telegram Action Section */}
               {!isCoaching ? (
-                <div className="mt-8 rounded-xl border border-primary/30 bg-primary/5 p-6 sm:p-8 text-center">
-                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-                    LANGKAH SETERUSNYA
+                <div className="surface-tint mt-4 p-6 text-left sm:p-8">
+                  <p className="flex items-center font-mono text-xs font-medium uppercase tracking-[0.14em] text-primary">
+                    <span aria-hidden="true" className="mr-2 inline-flex size-5 items-center justify-center rounded-full border border-primary/40 font-mono text-[0.65rem] text-primary">2</span>
+                    Langkah seterusnya
                   </p>
                   <h3 className="mt-2 text-xl font-semibold text-foreground">
                     Sertai Group Telegram Kelas Sekarang
@@ -211,7 +213,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
                       href={effectiveTelegramLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="enroll-solid mx-auto inline-flex h-12 w-full max-w-md items-center justify-center gap-3 rounded-md px-8 text-base font-semibold shadow-md transition-all hover:scale-[1.02]"
+                      className="enroll-solid min-h-12 w-full px-8 text-base font-semibold"
                     >
                       <Send aria-hidden="true" className="size-5" />
                       Join Telegram Group Kelas
@@ -224,7 +226,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
                   </p>
                 </div>
               ) : (
-                <div className="mt-8 rounded-xl border border-border bg-background/60 p-6 text-center">
+                <div className="mt-4 rounded-[var(--radius-md)] border border-border bg-background p-6 text-left">
                   <h3 className="text-lg font-semibold text-foreground">
                     Hubungi Dr Hanis untuk Jadual Sesi
                   </h3>
@@ -236,7 +238,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
                       href="https://t.me/HanishanafiRT"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="enroll-solid mx-auto inline-flex h-11 w-fit items-center justify-center gap-2 rounded-md px-8 text-sm font-semibold"
+                      className="enroll-solid w-fit px-8 text-sm font-semibold"
                     >
                       <Send aria-hidden="true" className="size-4" />
                       Hubungi RasenganTrader
@@ -260,7 +262,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   href="/register?offer=saham-101"
-                  className="enroll-solid w-full sm:w-auto px-6 text-sm font-semibold inline-flex h-11 items-center justify-center rounded-md"
+                  className="enroll-solid w-full sm:w-auto px-6 text-sm font-semibold"
                 >
                   Cuba Daftar Semula
                 </Link>
@@ -268,7 +270,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
                   href="https://t.me/HanishanafiRT"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="enroll-outline w-full sm:w-auto px-6 text-sm font-semibold inline-flex h-11 items-center justify-center rounded-md"
+                  className="enroll-outline w-full sm:w-auto px-6 text-sm font-semibold"
                 >
                   Hubungi Bantuan Telegram
                 </a>
@@ -290,7 +292,7 @@ export default async function TerimaKasihPage({ searchParams }: TerimaKasihPageP
                   href="https://t.me/HanishanafiRT"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="enroll-outline mx-auto w-fit px-8 text-sm font-semibold inline-flex h-11 items-center justify-center rounded-md"
+                  className="enroll-outline mx-auto w-fit px-8 text-sm font-semibold"
                 >
                   Hubungi Sokongan Telegram
                 </a>

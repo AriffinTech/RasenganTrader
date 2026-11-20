@@ -54,6 +54,9 @@ export function Footer() {
           <p className="mt-2">© {new Date().getFullYear()} RasenganTrader. All rights reserved.</p>
         </div>
       </div>
+      <p className="mx-auto mt-8 max-w-[90rem] border-t border-border pt-6 text-xs leading-5 text-muted-foreground">
+        <strong className="font-semibold text-[color:var(--color-ink-soft)]">Notis risiko:</strong> Kandungan RasenganTrader adalah untuk tujuan pendidikan sahaja dan bukan nasihat pelaburan. Trading saham dan futures melibatkan risiko kerugian modal. Keputusan lepas tidak menjamin keputusan masa hadapan.
+      </p>
     </footer>
   )
 }

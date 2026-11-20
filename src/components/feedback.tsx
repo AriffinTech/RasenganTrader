@@ -1,6 +1,6 @@
-import Image from 'next/image'
+import { FeedbackGallery, type FeedbackItem } from '@/components/feedback-gallery'
 
-const feedbacks = [
+const feedbacks: FeedbackItem[] = [
   {
     name: 'Pelajar',
     role: 'Trader',
@@ -53,10 +53,10 @@ const feedbacks = [
 
 export function Feedback() {
   return (
-    <section id="feedback" className="scroll-mt-32 border-b border-border px-5 py-16 sm:px-8 sm:py-20 md:py-28 lg:px-12">
+    <section id="feedback" className="border-b border-border px-5 py-16 sm:px-8 sm:py-20 md:py-28 lg:px-12">
       <div className="mx-auto max-w-[90rem]">
         <div className="max-w-2xl">
-          <p className="font-mono text-xs font-medium tracking-[0.16em] text-primary">FEEDBACK</p>
+          <p className="eyebrow">Feedback</p>
           <h2 className="mt-4 text-[clamp(2rem,4vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-foreground">
             Maklum balas daripada pelajar.
           </h2>
@@ -64,28 +64,10 @@ export function Feedback() {
             Apa kata mereka yang telah berjaya mengubah cara bacaan market melalui kelas RasenganTrader.
           </p>
         </div>
-        <div className="mt-12 grid gap-8 sm:gap-10 md:grid-cols-2 lg:grid-cols-3 xl:gap-12">
-          {feedbacks.map((item, index) => (
-            <div key={index} className="flex flex-col border border-border bg-secondary/30 p-6 sm:p-8">
-              <div className="relative aspect-[3/4] w-full overflow-hidden border border-border bg-black/20 mb-8">
-                <Image 
-                  src={item.image} 
-                  alt={`Feedback ${index + 1}`} 
-                  fill
-                  className="object-contain object-center p-2"
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                />
-              </div>
-              <blockquote className="text-sm leading-relaxed text-[color:var(--color-ink-soft)] sm:text-base flex-grow">
-                &ldquo;{item.content}&rdquo;
-              </blockquote>
-              <div className="mt-6 border-t border-border pt-4">
-                <p className="font-semibold text-foreground">{item.name}</p>
-                <p className="mt-1 font-mono text-[0.66rem] uppercase tracking-[0.08em] text-muted-foreground">{item.role}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <FeedbackGallery items={feedbacks} />
+        <p className="mx-auto mt-10 max-w-3xl text-center text-xs leading-5 text-muted-foreground">
+          Maklum balas di atas adalah pengalaman individu pelajar. Keputusan lepas tidak menjamin keputusan masa hadapan; trading melibatkan risiko kerugian modal.
+        </p>
       </div>
     </section>
   )
