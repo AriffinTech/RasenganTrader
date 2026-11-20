@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
 import { Footer } from '@/components/footer'
-import { Header } from '@/components/ui/header-1'
+import { Header } from '@/components/site-header'
 import { RegistrationForm } from '@/components/registration-form'
 import { getPublicClassSessions, getCourses } from '@/lib/db/courses'
 import { courseOffer, isRegistrationOffer, personalCoachingOffer, registrationOffers, saham101Offer, tradingClinicOnlineOffer } from '@/lib/course'
@@ -43,7 +43,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
 
           <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.72fr)] lg:items-start">
             <div>
-              <p className="font-mono text-xs font-medium tracking-[0.16em] text-primary">
+              <p className="eyebrow">
                 {isUpcoming
                   ? `OPENING SOON · ${(targetSession?.display_date || targetCourse?.title || '').toUpperCase()}`
                   : 'RASENGANTRADER'}
@@ -108,28 +108,28 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
             </div>
 
             {isUpcoming ? (
-              <div className="border border-primary bg-secondary p-7 sm:p-10">
-                <p className="font-mono text-xs tracking-[0.14em] text-primary">OPENING SOON</p>
+              <div className="surface-card border-primary/60 p-7 sm:p-10">
+                <span className="status-badge status-badge--warning">Opening Soon</span>
                 <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-foreground">
                   Pendaftaran dibuka pada {targetSession?.display_date || 'sesi akan datang'}.
                 </h2>
                 <p className="mt-4 leading-7 text-[color:var(--color-ink-soft)]">
                   Sila kembali semula apabila pendaftaran dibuka.
                 </p>
-                <Link href="/#kelas" className="enroll-outline mt-8 inline-flex px-5 text-sm font-semibold">
+                <Link href="/#kelas" className="enroll-outline mt-8 px-5 text-sm font-semibold">
                   Lihat kelas yang tersedia
                 </Link>
               </div>
             ) : isClosed ? (
-              <div className="border border-border bg-secondary p-7 sm:p-10">
-                <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground">PENDAFTARAN DITUTUP</p>
+              <div className="surface-card p-7 sm:p-10">
+                <span className="status-badge status-badge--closed">Pendaftaran ditutup</span>
                 <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-foreground">
                   Pendaftaran untuk kelas ini telah ditutup.
                 </h2>
                 <p className="mt-4 leading-7 text-[color:var(--color-ink-soft)]">
                   Kouta untuk sesi ini telah penuh atau pendaftaran telah ditamatkan. Sila pilih sesi lain atau hubungi kami.
                 </p>
-                <Link href="/#kelas" className="enroll-outline mt-8 inline-flex px-5 text-sm font-semibold">
+                <Link href="/#kelas" className="enroll-outline mt-8 px-5 text-sm font-semibold">
                   Lihat kelas yang tersedia
                 </Link>
               </div>

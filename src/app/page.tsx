@@ -6,26 +6,39 @@ import { Feedback } from '@/components/feedback'
 import { Footer } from '@/components/footer'
 import { Founder } from '@/components/founder'
 import { AccountOpening } from '@/components/account-opening'
+import { MobileCta } from '@/components/mobile-cta'
 import { PainPoints } from '@/components/pain-points'
-import { Header } from '@/components/ui/header-01'
+import { Header } from '@/components/site-header'
 import { CredibilityStrip, HeroSection } from '@/components/ui/hero-1'
+import { getClassSessionByOffer } from '@/lib/db/courses'
 
-export default function Home() {
+export default async function Home() {
+  const fastTrack = await getClassSessionByOffer('fast-track')
+  const fastTrackOpen = fastTrack?.status === 'open' || fastTrack?.status === 'completed_registering'
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Header />
+      <Header overlay />
       <main className="grow">
         <HeroSection />
         <CredibilityStrip />
         <PainPoints />
         <CourseMap />
         <CourseDetails />
-
         <Founder />
         <Feedback />
         <AccountOpening />
       </main>
       <Footer />
+      {fastTrack && fastTrackOpen ? (
+        <MobileCta
+          enrollOpen
+          title="True SMC Fast Track"
+          detail={`RM${(fastTrack.price_cents / 100).toLocaleString('en-US')} · ${fastTrack.display_date}`}
+        />
+      ) : (
+        <MobileCta enrollOpen={false} title="Kelas RasenganTrader" detail="Saham · FCPO · True SMC" />
+      )}
     </div>
   )
 }

@@ -1,3 +1,5 @@
+import { ArrowDown } from 'lucide-react'
+
 import { getCourseBySlug, getClassSessionByOffer } from '@/lib/db/courses'
 import ClassSchedule from '@/components/class-schedule'
 
@@ -13,37 +15,43 @@ export async function CourseDetails() {
   const exclusiveBonus = course?.exclusive_bonus
 
   return (
-    <section id="kelas" className="scroll-mt-32 px-5 py-24 sm:px-8 sm:py-32 lg:px-12 bg-background">
+    <section id="kelas" className="bg-background px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
       <div className="mx-auto max-w-[90rem]">
-        <div className="grid gap-12 pb-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center">
+        <div className="grid gap-10 pb-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center">
           <div>
-            <p className="font-mono text-xs font-medium tracking-[0.16em] text-primary">TRUE SMC FAST TRACK</p>
+            <p className="eyebrow">True SMC Fast Track</p>
             <h2 className="mt-4 max-w-[13ch] text-[clamp(2rem,4.5vw,4.8rem)] font-semibold leading-[0.96] tracking-[-0.06em] text-foreground">
               Kursus lengkap dari konsep sehingga execution.
             </h2>
           </div>
-          <div className="rounded-3xl bg-primary/5 p-8 sm:p-10">
-            <p className="font-mono text-[0.66rem] font-bold tracking-[0.1em] text-primary">NEXT CLASS</p>
-            <p className="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold tracking-[-0.05em] text-foreground">
-              {nextClassDate}
-            </p>
-            <p className="mt-4 max-w-[60ch] text-sm leading-6 text-foreground/80">
-              Teknik ini merupakan teknik advanced dan hanya sesuai untuk trader yang telah mempunyai ilmu asas trading.
-            </p>
+          <div className="surface-tint flex flex-col gap-6 p-7 sm:flex-row sm:items-end sm:justify-between sm:p-8">
+            <div>
+              <p className="font-mono text-[0.68rem] font-medium tracking-[0.12em] text-primary">NEXT CLASS</p>
+              <p className="mt-2 font-[family-name:var(--font-display)] text-3xl font-semibold tracking-[-0.05em] text-foreground">
+                {nextClassDate}
+              </p>
+              <p className="mt-3 max-w-[52ch] text-sm leading-6 text-[color:var(--color-ink-soft)]">
+                Teknik advanced — sesuai untuk trader yang telah mempunyai ilmu asas trading.
+              </p>
+            </div>
+            <a href="#jadual" className="enroll-outline shrink-0 px-5 text-sm font-semibold">
+              Lihat jadual &amp; harga
+              <ArrowDown aria-hidden="true" className="size-4" />
+            </a>
           </div>
         </div>
 
-        <div className="grid gap-12 py-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(16rem,0.65fr)]">
-          <div className="space-y-12">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(16rem,0.65fr)] lg:gap-8">
+          <div className="space-y-6">
             {modules.map((module) => (
-              <article key={module.number} className="grid gap-5 sm:grid-cols-[4.5rem_minmax(0,1fr)] rounded-3xl border border-border/40 bg-card p-8 shadow-sm transition-shadow hover:shadow-md sm:p-10">
-                <p className="font-mono text-2xl font-bold text-primary/80">{module.number}</p>
+              <article key={module.number} className="surface-card grid gap-5 p-7 sm:grid-cols-[4rem_minmax(0,1fr)] sm:p-9">
+                <p className="font-mono text-2xl font-medium text-primary">{module.number}</p>
                 <div>
-                  <h3 className="text-2xl font-bold tracking-[-0.045em] text-foreground">{module.title}</h3>
-                  <ul className="mt-6 grid gap-x-6 gap-y-4 text-sm leading-6 text-foreground/70 sm:grid-cols-2">
+                  <h3 className="text-2xl font-semibold tracking-[-0.045em] text-foreground">{module.title}</h3>
+                  <ul className="mt-6 grid gap-x-6 gap-y-3 text-sm leading-6 text-[color:var(--color-ink-soft)] sm:grid-cols-2">
                     {module.lessons.map((lesson) => (
                       <li key={lesson} className="flex gap-3">
-                        <span aria-hidden="true" className="mt-2 size-2 shrink-0 rounded-full bg-primary/80" />
+                        <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
                         {lesson}
                       </li>
                     ))}
@@ -53,23 +61,23 @@ export async function CourseDetails() {
             ))}
           </div>
 
-          <aside className="self-start rounded-3xl border border-border/50 bg-card p-8 shadow-sm sm:p-10">
-            <p className="font-mono text-xs font-bold tracking-[0.14em] text-primary">BONUSES</p>
-            <ul className="mt-6 space-y-4 text-sm leading-6 text-foreground/80">
+          <aside className="surface-card self-start p-7 sm:p-9">
+            <p className="eyebrow">Bonuses</p>
+            <ul className="mt-6 space-y-3 text-sm leading-6 text-[color:var(--color-ink-soft)]">
               {bonuses.map((bonus) => (
                 <li key={bonus} className="flex gap-3">
-                   <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-primary/60" />
-                   {bonus}
+                  <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                  {bonus}
                 </li>
               ))}
             </ul>
             {exclusiveBonus ? (
-              <div className="mt-10 rounded-2xl bg-primary/10 p-6">
-                <p className="font-mono text-[0.65rem] font-bold tracking-[0.14em] text-primary">
+              <div className="surface-tint mt-8 p-5 sm:p-6">
+                <p className="font-mono text-[0.68rem] font-medium tracking-[0.14em] text-primary">
                   {exclusiveBonus.badge_label || 'EXCLUSIVE BONUS'}
                 </p>
-                <h3 className="mt-3 text-xl font-bold tracking-[-0.04em] text-foreground">{exclusiveBonus.title}</h3>
-                <ul className="mt-5 space-y-3 text-sm leading-6 text-foreground/80">
+                <h3 className="mt-3 text-xl font-semibold tracking-[-0.04em] text-foreground">{exclusiveBonus.title}</h3>
+                <ul className="mt-4 space-y-2.5 text-sm leading-6 text-[color:var(--color-ink-soft)]">
                   {exclusiveBonus.benefits.map((benefit) => (
                     <li key={benefit} className="flex gap-3">
                       <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
@@ -82,11 +90,17 @@ export async function CourseDetails() {
           </aside>
         </div>
 
-        <div className="mt-16 rounded-3xl bg-muted/30 p-8 sm:p-12">
+        <div id="jadual" className="mt-20 border-t border-border pt-14">
+          <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="eyebrow">Jadual &amp; harga</p>
+              <h3 className="mt-3 text-[clamp(1.6rem,3vw,2.5rem)] font-semibold tracking-[-0.05em] text-foreground">
+                Pilih kelas anda.
+              </h3>
+            </div>
+            <p className="text-xs leading-5 text-muted-foreground">Bayaran yang telah dibuat adalah non-refundable.</p>
+          </div>
           <ClassSchedule />
-          <p className="mt-8 text-center text-xs leading-5 text-muted-foreground">
-            Bayaran yang telah dibuat adalah non-refundable.
-          </p>
         </div>
       </div>
     </section>
